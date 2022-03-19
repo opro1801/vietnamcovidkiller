@@ -7,3 +7,9 @@
 > email: tlpham | github: opro1801 | dev branch: lam_task
 
 > Task A
+
+### 2. Nguyen Kha Nhat Long
+
+> email: knlnguyen | github: longnguyen1802 | dev branch: long_task
+
+> Task B
