@@ -2,6 +2,9 @@ package comp3111.covid;
 
 import org.apache.commons.csv.*;
 import edu.duke.*;
+import java.util.HashSet;
+import java.text.ParseException;
+import java.util.ArrayList;
 
 /**
  * 
@@ -105,5 +108,62 @@ public class DataAnalysis {
 			
 			return oReport;
 	 }
- 
+	 
+	 public static long getNumberOfConfirmedCases(String dataset, String iso_code) {
+			long confirmedCases = 0;
+			
+			for (CSVRecord rec : getFileParser(dataset)) {
+				
+				if (rec.get("iso_code").equals(iso_code)) {
+					String s = rec.get("new_cases");
+					if (!s.equals("")) {
+						confirmedCases += Long.parseLong(s);
+					}
+				}		
+			}
+			
+			return confirmedCases;
+	 }
+	 
+	 public static ArrayList<Country> getAllCountries(String dataset) {
+		 	long numberCountries = 0;
+		    ArrayList<Country> countries = new ArrayList<Country>();
+		 	HashSet<String> isoCodes = new HashSet<String>();
+		 	
+		 	for	(CSVRecord rec: getFileParser(dataset)) {
+		 		if (!isoCodes.contains(rec.get("iso_code"))) {
+		 			try {
+						countries.add(new Country(rec.get("location"), 
+								new DateStatus(
+										rec.get("date"), 
+										Integer.parseInt(rec.get("total_cases")),
+										Float.parseFloat(rec.get("total_cases_per_million")))));
+					} catch (NumberFormatException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		 			isoCodes.add(rec.get("iso_code"));
+		 			numberCountries++;
+		 		} else {
+		 			try {
+						countries.get(countries.size()-1).addDateStatus(
+									new DateStatus(
+											rec.get("date"),
+											Integer.parseInt(rec.get("total_cases")),
+											Float.parseFloat(rec.get("total_cases_per_million")))
+								);
+					} catch (NumberFormatException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					} catch (ParseException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+		 		}
+		 	}
+		 	return countries;
+	 }
 }
