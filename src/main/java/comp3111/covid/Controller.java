@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.chart.LineChart;
+import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
@@ -40,7 +41,7 @@ public class Controller implements Initializable {
 	ObservableList<Country> list = FXCollections.observableArrayList(item	-> { return new Observable[] { item.isDone }; });
 	
     @FXML
-    private Button Submit;
+    private Button submit;
 
     @FXML
     private Button buttonConfirmedCases;
@@ -93,8 +94,8 @@ public class Controller implements Initializable {
     @FXML
     private DatePicker endDate;
 
-    @FXML
-    private LineChart<?, ?> lineChart;
+//    @FXML
+//    private LineChart<?, ?> lineChart;
 
     @FXML
     private DatePicker startDate;
@@ -114,6 +115,7 @@ public class Controller implements Initializable {
     	selectedCountries = countriesList.getSelectionModel().getSelectedItems();
     }
     
+    @SuppressWarnings("unchecked")
     @FXML
     void doSubmit(ActionEvent event) throws ParseException {
     	Date startDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(startDate.getValue().toString());
@@ -128,6 +130,11 @@ public class Controller implements Initializable {
 //    		}
 //    	}
 //    	textAreaConsole.setText(report);
+    	final NumberAxis yAxis = new NumberAxis();
+    	final NumberAxis xAxis = new NumberAxis();
+    	
+        final LineChart<Number, Number> lineChart = new LineChart<Number, Number>(xAxis, yAxis);
+        
     	for(Country country : selectedCountries) {
     		XYChart.Series series = new XYChart.Series();
     		series.setName(country.name);
@@ -145,6 +152,7 @@ public class Controller implements Initializable {
 //    	series.getData().add(new XYChart.Data(Date.UTC(2020, 5, 12, 0, 0, 0), 25.234));
 //    	
 //    	lineChart.getData().add(series);
+    	
     }
     /**
      *  Task Zero

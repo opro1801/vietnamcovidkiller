@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -81,7 +78,7 @@
                               <Label layoutX="42.0" layoutY="19.0" text="Start Date" />
                               <Label layoutX="97.0" layoutY="69.0" text="Countries" />
                               <ListView fx:id="countriesList" layoutX="198.0" layoutY="69.0" onMouseClicked="#selectCountry" prefHeight="200.0" prefWidth="189.0" />
-                              <Button fx:id="Submit" layoutX="198.0" layoutY="282.0" mnemonicParsing="false" onAction="#doSubmit" text="Submit" />
+                              <Button fx:id="submit" layoutX="198.0" layoutY="282.0" mnemonicParsing="false" onAction="#doSubmit" text="Submit" />
                               <DatePicker fx:id="endDate" layoutX="427.0" layoutY="14.0" />
                               <Label layoutX="362.0" layoutY="19.0" text="End Date" />
                            </children>
@@ -111,17 +108,6 @@
       </children>
     </AnchorPane>
       <Label text="Console" />
-      <ScrollPane prefHeight="387.0" prefWidth="719.0">
-         <content>
-            <LineChart fx:id="lineChart" horizontalZeroLineVisible="false" legendSide="RIGHT" prefHeight="553.0" prefWidth="1201.0" title="Cumulative Confirmed COVID-19 Cases (per 1M)" verticalGridLinesVisible="false">
-              <xAxis>
-                <CategoryAxis side="BOTTOM" />
-              </xAxis>
-              <yAxis>
-                <NumberAxis side="LEFT" />
-              </yAxis>
-            </LineChart>
-         </content>
-      </ScrollPane>
+      <ScrollPane prefHeight="387.0" prefWidth="719.0" />
   </children>
 </VBox>
