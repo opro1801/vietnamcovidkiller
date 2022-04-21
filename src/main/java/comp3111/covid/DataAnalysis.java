@@ -136,8 +136,11 @@ public class DataAnalysis {
 						countries.add(new Country(rec.get("location"), 
 								new DateStatus(
 										rec.get("date"), 
-										Integer.parseInt(rec.get("total_cases")),
-										Float.parseFloat(rec.get("total_cases_per_million")))));
+										rec.get("total_cases"),
+										rec.get("total_cases_per_million"),
+										rec.get("total_deaths"),
+										rec.get("total_deaths_per_million")
+										)));
 					} catch (NumberFormatException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -152,8 +155,11 @@ public class DataAnalysis {
 						countries.get(countries.size()-1).addDateStatus(
 									new DateStatus(
 											rec.get("date"),
-											Integer.parseInt(rec.get("total_cases")),
-											Float.parseFloat(rec.get("total_cases_per_million")))
+											rec.get("total_cases"),
+											rec.get("total_cases_per_million"),
+											rec.get("total_deaths"),
+											rec.get("total_deaths_per_million")
+											)
 								);
 					} catch (NumberFormatException e) {
 						// TODO Auto-generated catch block

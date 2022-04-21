@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.CategoryAxis?>
-<?import javafx.scene.chart.LineChart?>
-<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
@@ -77,12 +74,12 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="412.0" prefWidth="719.0">
                            <children>
-                              <DatePicker fx:id="startDate" layoutX="124.0" layoutY="14.0" />
-                              <Label layoutX="42.0" layoutY="19.0" text="Start Date" />
-                              <Label layoutX="97.0" layoutY="69.0" text="Countries" />
-                              <ListView fx:id="countriesList" layoutX="198.0" layoutY="69.0" onMouseClicked="#selectCountry" prefHeight="200.0" prefWidth="189.0" />
-                              <Button fx:id="Submit" layoutX="198.0" layoutY="282.0" mnemonicParsing="false" onAction="#doSubmit" text="Submit" />
-                              <DatePicker fx:id="endDate" layoutX="427.0" layoutY="14.0" />
+                              <DatePicker fx:id="startDateChartA" layoutX="124.0" layoutY="14.0" />
+                              <Label layoutX="58.0" layoutY="19.0" text="Start Date" />
+                              <Label layoutX="124.0" layoutY="69.0" text="Countries" />
+                              <ListView fx:id="countriesChartA" layoutX="198.0" layoutY="69.0" prefHeight="200.0" prefWidth="189.0" />
+                              <Button fx:id="submitChartA" layoutX="198.0" layoutY="282.0" mnemonicParsing="false" onAction="#doSubmitChartA" text="Submit" />
+                              <DatePicker fx:id="endDateChartA" layoutX="427.0" layoutY="14.0" />
                               <Label layoutX="362.0" layoutY="19.0" text="End Date" />
                            </children>
                         </AnchorPane>
@@ -92,7 +89,13 @@
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
                            <children>
-                              <TextArea layoutX="14.0" layoutY="14.0" prefHeight="290.0" prefWidth="694.0" text="Task B2: Generate data charts showing the cumulative confirmed COVID-19 deaths (per 1M) by country&#10;&#10;Input&#10;•&#9;Specify the period of interest&#10;•&#9;Specify the countries of interest&#10;&#10;Output&#10;•&#9;Label the data chart with a proper title: &quot;Cumulative Confirmed COVID-19 Deaths (per 1M)&quot;&#10;•&#9;Label the x-axis and y-axis with proper scales&#10;•&#9;Present data in coloured cumulative curves labelled with corresponding countries&#10;&#10;" wrapText="true" />
+                              <DatePicker fx:id="startDateChartB" layoutX="121.0" layoutY="14.0" />
+                              <DatePicker fx:id="endDateChartB" layoutX="429.0" layoutY="14.0" />
+                              <Label layoutX="53.0" layoutY="19.0" text="Start Date" />
+                              <Label layoutX="367.0" layoutY="19.0" text="End Date" />
+                              <ListView fx:id="countriesChartB" layoutX="200.0" layoutY="67.0" prefHeight="200.0" prefWidth="186.0" />
+                              <Label layoutX="121.0" layoutY="67.0" text="Countries" />
+                              <Button fx:id="submitChartB" layoutX="200.0" layoutY="279.0" mnemonicParsing="false" onAction="#doSubmitChartB" text="Submit" />
                            </children>
                         </AnchorPane>
                     </content>
@@ -111,17 +114,6 @@
       </children>
     </AnchorPane>
       <Label text="Console" />
-      <ScrollPane prefHeight="387.0" prefWidth="719.0">
-         <content>
-            <LineChart fx:id="lineChart" horizontalZeroLineVisible="false" legendSide="RIGHT" prefHeight="553.0" prefWidth="1201.0" title="Cumulative Confirmed COVID-19 Cases (per 1M)" verticalGridLinesVisible="false">
-              <xAxis>
-                <CategoryAxis side="BOTTOM" />
-              </xAxis>
-              <yAxis>
-                <NumberAxis side="LEFT" />
-              </yAxis>
-            </LineChart>
-         </content>
-      </ScrollPane>
+      <ScrollPane fx:id="consoleOutput" prefHeight="387.0" prefWidth="719.0" />
   </children>
 </VBox>
