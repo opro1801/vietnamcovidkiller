@@ -1,9 +1,17 @@
 package comp3111.covid;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
+
+import javafx.util.Pair;
 import org.apache.commons.csv.*;
 import edu.duke.*;
 import java.util.HashSet;
 import java.text.ParseException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 
 /**
@@ -172,4 +180,98 @@ public class DataAnalysis {
 		 	}
 		 	return countries;
 	 }
+	 
+	 
+	 public static HashMap<String, String> getListOfCountry(String dataset) {
+		 HashMap<String, String> setOfCountry = new HashMap<>();
+		 for (CSVRecord rec : getFileParser(dataset)) {
+			 if(!setOfCountry.keySet().contains(rec.get("location"))) {
+				 setOfCountry.put(rec.get("location"),rec.get("iso_code"));
+			 }
+		 }
+		 return setOfCountry;
+	 }
+	 
+	 //Factory pattern
+	 @SuppressWarnings("resource")
+	public static Pair<Integer,Double> getDataOfCountry(String dataset,String iso_code,String date,String type) throws InvalidInputException {
+		 //int total_death = 0;
+		 System.out.println("Haha");
+		 System.out.println(iso_code);
+		 boolean too_early = false;
+		 //System.out.println("Haha");
+		 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd,yyyy");
+		// System.out.println("Haha");
+	     LocalDate localDate = LocalDate.parse(date, formatter);
+	     //System.out.println("Haha");
+	     if(localDate.isAfter(LocalDate.of(2021, 07, 20))) {
+				throw new InvalidInputException("Too late date");
+		}
+	     //System.out.println("Haha");
+	     System.out.println("Why get here");
+	     for (CSVRecord rec : getFileParser(dataset)) {
+	    	 System.out.println("Why dont get here");
+	    	 System.out.println(rec.get("iso_code"));
+	    	 if (rec.get("iso_code").equals(iso_code)) {
+	    		System.out.println("Get there");
+				String get_date = rec.get("date").strip();
+				DateTimeFormatter formatters = DateTimeFormatter.ofPattern("M/d/yyyy");
+				LocalDate this_date = LocalDate.parse(get_date, formatters);
+				
+				if(!too_early && localDate.isBefore(this_date)) {
+					too_early = true;
+					throw new InvalidInputException("Too early date, no deaths");
+				}
+				if(localDate.isEqual(this_date)) {
+					//Factory here
+					// CASE 1 : DEATH
+					if(type.equals("deaths"))
+					{
+						String get_death = rec.get("total_deaths");
+						if(get_death==null || get_death == "") {
+							return new Pair<Integer,Double>(0, (double) 0);
+						}
+						else {
+							int total_death = Integer.parseInt(get_death.strip());
+							String total_death_million = rec.get("total_deaths_per_million");
+							double total_death_per_million = Double.parseDouble(total_death_million.strip());
+							ArrayList<Integer> results = new ArrayList<>();
+							//System.out.println("Haha1");
+							return new Pair<Integer,Double>(total_death, total_death_per_million);
+						}
+					}
+					// CASE 2 : CASE
+					else if(type.equals("cases")) {
+						String get_case = rec.get("total_cases");
+						if(get_case==null || get_case == "") {
+							return new Pair<Integer,Double>(0, (double) 0);
+						}
+						else {
+							int total_case = Integer.parseInt(get_case.strip());
+							String total_case_million = rec.get("total_cases_per_million");
+							double total_case_per_million = Double.parseDouble(total_case_million.strip());
+							ArrayList<Integer> results = new ArrayList<>();
+							//System.out.println("Haha2");
+							System.out.println(total_case+"and"+total_case_per_million);
+							return new Pair<Integer,Double>(total_case, total_case_per_million);
+						}
+					}
+				}
+	    	 }	
+	     }
+	     //System.out.println("Haha");
+	     return null;
+	 }
 }
+class InvalidInputException extends Exception{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	public InvalidInputException(String string) {
+		super(string);
+	}
+	public InvalidInputException(String message, Throwable throwable) {
+	    super(message, throwable);
+	}
+};

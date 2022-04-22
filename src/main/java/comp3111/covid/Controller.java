@@ -2,6 +2,7 @@ package comp3111.covid;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import javafx.beans.Observable;
 import javafx.beans.property.BooleanProperty;
@@ -20,11 +21,14 @@ import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.CheckBoxListCell;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.util.StringConverter;
@@ -129,12 +133,17 @@ public class Controller implements Initializable {
     @FXML
     private Button submitTableA;
     
+    @FXML
+    private DatePicker dateTableA;
     
     @FXML
     private ListView<Country> countriesTableB;
     
     @FXML
     private Button submitTableB;
+    
+    @FXML
+    private DatePicker dateTableB;
     
     @SuppressWarnings("unused")
 	@Override
@@ -170,9 +179,46 @@ public class Controller implements Initializable {
     	selectedCountriesChartA = countriesChartA.getSelectionModel().getSelectedItems();
     }
     
+    @FXML
     void doSubmitTabelA(ActionEvent event) throws ParseException{
-    	Date interestDate = new SimpleDateFormat("yyyy-MM-dd").parse(startDateChartB.getValue().toString());
+    	Date interestDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateTableA.getValue().toString());
+    	selectedCountriesTableA = countriesTableA.getItems().filtered((Country item)->item.isDone.get());
+    	String iDataset = textfieldDataset.getText();
+    	String date = interestDate.toString();
+    	
+    	//setup the table
+    	TableView<TableData> result = new TableView<TableData>();
+    	TableColumn<TableData,String> countries = new TableColumn<TableData,String>("Country");
+    	TableColumn<TableData,Integer> totalCases = new TableColumn<TableData,Integer>("Total Cases");
+    	TableColumn<TableData,Double> totalCasePer1M = new TableColumn<TableData,Double>("Total Cases (per 1M)");
+    	
+    	countries.setCellValueFactory(new PropertyValueFactory<>("countryName"));
+    	totalCases.setCellValueFactory(new PropertyValueFactory<>("totalData"));
+    	totalCasePer1M.setCellValueFactory(new PropertyValueFactory<>("totalDataPer1M"));
+    	
+    	countries.prefWidthProperty().bind(result.widthProperty().multiply(0.3));
+    	totalCases.prefWidthProperty().bind(result.widthProperty().multiply(0.3));
+    	totalCasePer1M.prefWidthProperty().bind(result.widthProperty().multiply(0.4));
+    	result.getColumns().setAll(countries,totalCases,totalCasePer1M);
+    	result.prefWidthProperty().bind(consoleOutput.widthProperty());
+
+    	List<String> chosenCountries = chosenACountry();
+    	System.out.println("Chosen country is"+chosenCountries);
+    	result.setItems(TableHelper.getModels(chosenCountries,iDataset,date,"cases"));
+    	consoleOutput.setContent(result);
     }
+    
+    //helper 
+    List<String> chosenACountry(){
+    	ArrayList<String> result = new ArrayList<>();
+    	for(Country country:selectedCountriesTableA) {
+    		result.add(country.name);
+    	}
+    	return result;
+    }
+    
+    @FXML
+    void doSubmitTabelB(ActionEvent event) throws ParseException{}
     
     @SuppressWarnings("unchecked")
     @FXML
