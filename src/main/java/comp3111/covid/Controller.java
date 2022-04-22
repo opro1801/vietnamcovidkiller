@@ -43,9 +43,13 @@ public class Controller implements Initializable {
 
 	ObservableList<Country> selectedCountriesChartA = FXCollections.observableArrayList();
 	ObservableList<Country> selectedCountriesChartB = FXCollections.observableArrayList();
+	ObservableList<Country> selectedCountriesTableA = FXCollections.observableArrayList();
+	ObservableList<Country> selectedCountriesTableB = FXCollections.observableArrayList();
 	
 	ObservableList<Country> listChartA = FXCollections.observableArrayList(item	-> { return new Observable[] { item.isDone }; });
 	ObservableList<Country> listChartB = FXCollections.observableArrayList(item	-> { return new Observable[] { item.isDone }; });
+	ObservableList<Country> listTableA = FXCollections.observableArrayList(item	-> { return new Observable[] { item.isDone }; });
+	ObservableList<Country> listTableB = FXCollections.observableArrayList(item	-> { return new Observable[] { item.isDone }; });
 	
     @FXML
     private Button submitChartA;
@@ -119,21 +123,45 @@ public class Controller implements Initializable {
     @FXML
     private ScrollPane consoleOutput;
     
+    @FXML
+    private ListView<Country> countriesTableA;
+    
+    @FXML
+    private Button submitTableA;
+    
+    @FXML
+    private ListView<Country> countriesTableB;
+    
+    @FXML
+    private Button submitTableB;
+    
     @SuppressWarnings("unused")
 	@Override
     public void initialize(URL arg0, ResourceBundle arg1) {
-       	ArrayList<Country> countries1 = DataAnalysis.getAllCountries(dataset);
-       	ArrayList<Country> countries2 = DataAnalysis.getAllCountries(dataset);
+       	ArrayList<Country> ListCountriesChartA = DataAnalysis.getAllCountries(dataset);
+       	ArrayList<Country> ListCountriesChartB = DataAnalysis.getAllCountries(dataset);
+       	ArrayList<Country> ListCountriesTableA = DataAnalysis.getAllCountries(dataset);
+       	ArrayList<Country> ListCountriesTableB = DataAnalysis.getAllCountries(dataset);
     	listChartA.removeAll(listChartA);
     	listChartB.removeAll(listChartB);
-    	listChartA.addAll(countries1);
-    	listChartB.addAll(countries2);
+    	listTableA.removeAll(listTableA);
+    	listTableA.removeAll(listTableB);
+    	listChartA.addAll(ListCountriesChartA);
+    	listChartB.addAll(ListCountriesChartB);
+    	listTableA.addAll(ListCountriesTableA);
+    	listTableB.addAll(ListCountriesTableB);
     	countriesChartA.getItems().addAll(listChartA);
     	countriesChartA.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     	countriesChartA.setCellFactory(CheckBoxListCell.forListView((Country item )-> item.isDone ));
     	countriesChartB.getItems().addAll(listChartB);
     	countriesChartB.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     	countriesChartB.setCellFactory(CheckBoxListCell.forListView((Country item)-> item.isDone ));
+    	countriesTableA.getItems().addAll(listTableA);
+    	countriesTableA.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    	countriesTableA.setCellFactory(CheckBoxListCell.forListView((Country item )-> item.isDone ));
+    	countriesTableB.getItems().addAll(listTableB);
+    	countriesTableB.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
+    	countriesTableB.setCellFactory(CheckBoxListCell.forListView((Country item )-> item.isDone ));
     }
 
     @FXML
