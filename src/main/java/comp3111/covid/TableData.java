@@ -42,10 +42,10 @@ class TableHelper{
 	static public ObservableList<TableData> getModels(List<String> chosenCountries,String dataset,String date,String type){
 		List<TableData> final_result = new ArrayList<TableData>();
 		HashMap<String, String> countryList = DataAnalysis.getListOfCountry(dataset);
-		System.out.println("Hello out");
-		System.out.println(chosenCountries);
+		//System.out.println("Hello out");
+		//System.out.println(chosenCountries);
 		for(String country:chosenCountries) {
-			System.out.println("Hello sin");
+			//System.out.println("Hello sin");
 			try{
 				Pair<Integer,Double> result = null;
 				//Factory here

@@ -196,8 +196,9 @@ public class DataAnalysis {
 	 @SuppressWarnings("resource")
 	public static Pair<Integer,Double> getDataOfCountry(String dataset,String iso_code,String date,String type) throws InvalidInputException {
 		 //int total_death = 0;
-		 System.out.println("Haha");
-		 System.out.println(iso_code);
+		// System.out.println("Haha");
+		// System.out.println(iso_code);
+		// System.out.println(date);
 		 boolean too_early = false;
 		 //System.out.println("Haha");
 		 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd,yyyy");
@@ -210,10 +211,10 @@ public class DataAnalysis {
 	     //System.out.println("Haha");
 	     System.out.println("Why get here");
 	     for (CSVRecord rec : getFileParser(dataset)) {
-	    	 System.out.println("Why dont get here");
-	    	 System.out.println(rec.get("iso_code"));
+	    	// System.out.println("Why dont get here");
+	    	// System.out.println(rec.get("iso_code"));
 	    	 if (rec.get("iso_code").equals(iso_code)) {
-	    		System.out.println("Get there");
+	    	//	System.out.println("Get there");
 				String get_date = rec.get("date").strip();
 				DateTimeFormatter formatters = DateTimeFormatter.ofPattern("M/d/yyyy");
 				LocalDate this_date = LocalDate.parse(get_date, formatters);

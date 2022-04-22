@@ -184,7 +184,8 @@ public class Controller implements Initializable {
     	Date interestDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateTableA.getValue().toString());
     	selectedCountriesTableA = countriesTableA.getItems().filtered((Country item)->item.isDone.get());
     	String iDataset = textfieldDataset.getText();
-    	String date = interestDate.toString();
+    	SimpleDateFormat dateFormat= new SimpleDateFormat("MMM dd,yyyy");
+    	String date = dateFormat.format(interestDate);
     	
     	//setup the table
     	TableView<TableData> result = new TableView<TableData>();
@@ -218,8 +219,42 @@ public class Controller implements Initializable {
     }
     
     @FXML
-    void doSubmitTabelB(ActionEvent event) throws ParseException{}
-    
+    void doSubmitTabelB(ActionEvent event) throws ParseException{
+    	Date interestDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateTableB.getValue().toString());
+    	selectedCountriesTableB = countriesTableB.getItems().filtered((Country item)->item.isDone.get());
+    	String iDataset = textfieldDataset.getText();
+    	SimpleDateFormat dateFormat= new SimpleDateFormat("MMM dd,yyyy");
+    	String date = dateFormat.format(interestDate);
+    	
+    	//setup the table
+    	TableView<TableData> result = new TableView<TableData>();
+    	TableColumn<TableData,String> countries = new TableColumn<TableData,String>("Country");
+    	TableColumn<TableData,Integer> totalCases = new TableColumn<TableData,Integer>("Total Deaths");
+    	TableColumn<TableData,Double> totalCasePer1M = new TableColumn<TableData,Double>("Total Deaths (per 1M)");
+    	
+    	countries.setCellValueFactory(new PropertyValueFactory<>("countryName"));
+    	totalCases.setCellValueFactory(new PropertyValueFactory<>("totalData"));
+    	totalCasePer1M.setCellValueFactory(new PropertyValueFactory<>("totalDataPer1M"));
+    	
+    	countries.prefWidthProperty().bind(result.widthProperty().multiply(0.3));
+    	totalCases.prefWidthProperty().bind(result.widthProperty().multiply(0.3));
+    	totalCasePer1M.prefWidthProperty().bind(result.widthProperty().multiply(0.4));
+    	result.getColumns().setAll(countries,totalCases,totalCasePer1M);
+    	result.prefWidthProperty().bind(consoleOutput.widthProperty());
+
+    	List<String> chosenCountries = chosenACountry();
+    	System.out.println("Chosen country is"+chosenCountries);
+    	result.setItems(TableHelper.getModels(chosenCountries,iDataset,date,"deaths"));
+    	consoleOutput.setContent(result);
+    }
+    //helper
+    List<String> chosenBCountry(){
+    	ArrayList<String> result = new ArrayList<>();
+    	for(Country country:selectedCountriesTableB) {
+    		result.add(country.name);
+    	}
+    	return result;
+    }
     @SuppressWarnings("unchecked")
     @FXML
     void doSubmitChartA(ActionEvent event) throws ParseException {
