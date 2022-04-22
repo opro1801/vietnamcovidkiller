@@ -129,6 +129,7 @@ public class Controller implements Initializable {
     @FXML
     private Button submitTableA;
     
+    
     @FXML
     private ListView<Country> countriesTableB;
     
@@ -167,6 +168,10 @@ public class Controller implements Initializable {
     @FXML
     void selectCountry(MouseEvent event) {
     	selectedCountriesChartA = countriesChartA.getSelectionModel().getSelectedItems();
+    }
+    
+    void doSubmitTabelA(ActionEvent event) throws ParseException{
+    	Date interestDate = new SimpleDateFormat("yyyy-MM-dd").parse(startDateChartB.getValue().toString());
     }
     
     @SuppressWarnings("unchecked")
@@ -279,6 +284,7 @@ public class Controller implements Initializable {
 
     	consoleOutput.setContent(lineChartB);
     }
+    
     
     /**
      *  Task Zero

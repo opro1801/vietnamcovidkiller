@@ -42,7 +42,7 @@
                               <ListView fx:id="countriesTableA" layoutX="154.0" layoutY="65.0" prefHeight="200.0" prefWidth="200.0" />
                               <Button fx:id="submitTableA" layoutX="154.0" layoutY="280.0" mnemonicParsing="false" text="Submit" />
                               <Label layoutX="58.0" layoutY="56.0" text="Countries" />
-                              <DatePicker layoutX="195.0" layoutY="10.0" />
+                              <DatePicker fx:id="dateTableA" layoutX="195.0" layoutY="10.0" />
                            </children>
                         </AnchorPane>
                     </content>
@@ -57,7 +57,7 @@
                                     <ListView fx:id="countriesTableB" layoutX="154.0" layoutY="65.0" prefHeight="200.0" prefWidth="200.0" />
                                     <Button fx:id="submitTableB" layoutX="154.0" layoutY="280.0" mnemonicParsing="false" text="Submit" />
                                     <Label layoutX="58.0" layoutY="56.0" text="Countries" />
-                                    <DatePicker layoutX="195.0" layoutY="10.0" />
+                                    <DatePicker fx:id="dateTableB" layoutX="195.0" layoutY="10.0" />
                                  </children>
                               </AnchorPane>
                            </children>
