@@ -260,19 +260,28 @@ public class Controller implements Initializable {
     void doSubmitChartA(ActionEvent event) throws ParseException {
     	Date startDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(startDateChartA.getValue().toString());
     	Date endDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(endDateChartA.getValue().toString());
-    	AlertType type = AlertType.ERROR;
-    	Alert alert = new Alert(type, "");
-    	
-    	alert.initModality(Modality.APPLICATION_MODAL);
-    	alert.initOwner(consoleOutput.getScene().getWindow());
-    	alert.getDialogPane().setContentText("Start Date must be less then End Date!");
-    	alert.getDialogPane().setHeaderText("Date Error");
-    	if(endDateObj.before(startDateObj)) {
-    		alert.showAndWait();
-    		return;
-    	}
     	selectedCountriesChartA = countriesChartA.getItems().filtered((Country item) -> item.isDone.get());
 
+    	Alert dateAlert = new Alert(AlertType.ERROR, "");
+    	Alert countriesAlert = new Alert(AlertType.WARNING, "");
+    	
+    	dateAlert.initModality(Modality.APPLICATION_MODAL);
+    	dateAlert.initOwner(consoleOutput.getScene().getWindow());
+    	dateAlert.getDialogPane().setContentText("Start Date must be less then End Date!");
+    	dateAlert.getDialogPane().setHeaderText("Date Is Invalid");
+    	countriesAlert.initModality(Modality.APPLICATION_MODAL);
+    	countriesAlert.initOwner(consoleOutput.getScene().getWindow());
+    	countriesAlert.getDialogPane().setContentText("You should select at least one country!");
+    	countriesAlert.getDialogPane().setHeaderText("No country have been selected");
+    	if(endDateObj.before(startDateObj) || endDateObj.equals(startDateObj)) {
+    		dateAlert.showAndWait();
+    		return;
+    	}
+
+    	if(selectedCountriesChartA.isEmpty()) {
+    		countriesAlert.showAndWait();
+    		return;
+    	}
     	int startDateInt = getTimeInt(startDateObj);
     	int endDateInt = getTimeInt(endDateObj);
     	final NumberAxis yAxis = new NumberAxis();
@@ -316,18 +325,25 @@ public class Controller implements Initializable {
     	Date startDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(startDateChartB.getValue().toString());
     	Date endDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(endDateChartB.getValue().toString());
     	selectedCountriesChartB = countriesChartB.getItems().filtered((Country item) -> item.isDone.get());
-    	AlertType type = AlertType.ERROR;
-    	Alert alert = new Alert(type, "");
+    	Alert dateAlert = new Alert(AlertType.ERROR, "");
+    	Alert countriesAlert = new Alert(AlertType.WARNING, "");
     	
-    	alert.initModality(Modality.APPLICATION_MODAL);
-    	alert.initOwner(consoleOutput.getScene().getWindow());
-    	alert.getDialogPane().setContentText("Start Date must be less then End Date!");
-    	alert.getDialogPane().setHeaderText("Date Error");
-    	if(endDateObj.before(startDateObj)) {
-    		alert.showAndWait();
+    	dateAlert.initModality(Modality.APPLICATION_MODAL);
+    	dateAlert.initOwner(consoleOutput.getScene().getWindow());
+    	dateAlert.getDialogPane().setContentText("Start Date must be less then End Date!");
+    	dateAlert.getDialogPane().setHeaderText("Date Is Invalid");
+    	countriesAlert.initModality(Modality.APPLICATION_MODAL);
+    	countriesAlert.initOwner(consoleOutput.getScene().getWindow());
+    	countriesAlert.getDialogPane().setContentText("You should select at least one country!");
+    	countriesAlert.getDialogPane().setHeaderText("No country have been selected");
+    	if(endDateObj.before(startDateObj) || endDateObj.equals(startDateObj)) {
+    		dateAlert.showAndWait();
     		return;
     	}
-    	
+    	if(selectedCountriesChartB.isEmpty()) {
+    		countriesAlert.showAndWait();
+    		return;
+    	}
     	
     	int startDateInt = getTimeInt(startDateObj);
     	int endDateInt = getTimeInt(endDateObj);
@@ -377,7 +393,7 @@ public class Controller implements Initializable {
     	String iDataset = textfieldDataset.getText();
     	String iISO = textfieldISO.getText();
     	String oReport = DataAnalysis.getConfirmedCases(iDataset, iISO);
-    	textAreaConsole.setText(oReport);
+    	consoleOutput.setContent(new TextArea(oReport));
     }
 
   
@@ -391,7 +407,7 @@ public class Controller implements Initializable {
     	String iDataset = textfieldDataset.getText();
     	String iISO = textfieldISO.getText();
     	String oReport = DataAnalysis.getConfirmedDeaths(iDataset, iISO);
-    	textAreaConsole.setText(oReport);
+    	consoleOutput.setContent(new TextArea(oReport));
     }
 
   
@@ -405,7 +421,7 @@ public class Controller implements Initializable {
     	String iDataset = textfieldDataset.getText();
     	String iISO = textfieldISO.getText();
     	String oReport = DataAnalysis.getRateOfVaccination(iDataset, iISO);
-    	textAreaConsole.setText(oReport);
+    	consoleOutput.setContent(new TextArea(oReport));
     }  
 
     int getTimeInt(Date date) {
