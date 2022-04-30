@@ -36,6 +36,7 @@ import javafx.util.StringConverter;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -181,7 +182,33 @@ public class Controller implements Initializable {
     
     @FXML
     void doSubmitTabelA(ActionEvent event) throws ParseException{
+    	//Get date
     	Date interestDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateTableA.getValue().toString());
+    	AlertType type = AlertType.ERROR;
+    	Alert alert = new Alert(type, "");
+    	
+    	//Error handling
+    	//Error message
+    	String firstMessage = "The date must be after the date of first COVID 19 case (November 17,2019)";
+    	String secondMessage = "The date must be not after the current date (July 20,2021)";
+    	alert.initModality(Modality.APPLICATION_MODAL);
+    	alert.initOwner(consoleOutput.getScene().getWindow());
+    	//alert.getDialogPane().setContentText("The date must be after the date of first COVID 19 case (November 17,2019)");
+    	alert.getDialogPane().setHeaderText("Date Error");
+    	// Base on information we can get the first case is this
+    	Date firstDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2019,11,17).toString());
+    	Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2021,7,20).toString());
+    	
+    	if(interestDate.before(firstDate)) {
+    		alert.getDialogPane().setContentText(firstMessage);
+    		alert.showAndWait();
+    		return;
+    	}
+    	if(interestDate.after(lastDate)) {
+    		alert.getDialogPane().setContentText(secondMessage);
+    		alert.showAndWait();
+    		return;
+    	}
     	selectedCountriesTableA = countriesTableA.getItems().filtered((Country item)->item.isDone.get());
     	String iDataset = textfieldDataset.getText();
     	SimpleDateFormat dateFormat= new SimpleDateFormat("MMM dd,yyyy");
@@ -220,7 +247,34 @@ public class Controller implements Initializable {
     
     @FXML
     void doSubmitTabelB(ActionEvent event) throws ParseException{
+    	//Get date
     	Date interestDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateTableB.getValue().toString());
+    	AlertType type = AlertType.ERROR;
+    	Alert alert = new Alert(type, "");
+    	
+    	//Error handling
+    	//Error message
+    	String firstMessage = "The date must be after the date of first COVID 19 case (November 17,2019)";
+    	String secondMessage = "The date must be not after the current date (July 20,2021)";
+    	alert.initModality(Modality.APPLICATION_MODAL);
+    	alert.initOwner(consoleOutput.getScene().getWindow());
+    	//alert.getDialogPane().setContentText("The date must be after the date of first COVID 19 case (November 17,2019)");
+    	alert.getDialogPane().setHeaderText("Date Error");
+    	// Base on information we can get the first case is this
+    	Date firstDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2019,11,17).toString());
+    	Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2021,7,20).toString());
+    	
+    	if(interestDate.before(firstDate)) {
+    		alert.getDialogPane().setContentText(firstMessage);
+    		alert.showAndWait();
+    		return;
+    	}
+    	if(interestDate.after(lastDate)) {
+    		alert.getDialogPane().setContentText(secondMessage);
+    		alert.showAndWait();
+    		return;
+    	}
+    	
     	selectedCountriesTableB = countriesTableB.getItems().filtered((Country item)->item.isDone.get());
     	String iDataset = textfieldDataset.getText();
     	SimpleDateFormat dateFormat= new SimpleDateFormat("MMM dd,yyyy");
