@@ -188,10 +188,16 @@ public class DataAnalysis {
 								new DateStatus(
 										rec.get("date"), 
 										rec.get("total_cases"),
+										rec.get("new_cases"),
 										rec.get("total_cases_per_million"),
 										rec.get("total_deaths"),
-										rec.get("total_deaths_per_million")
-										)));
+										rec.get("new_deaths"),
+										rec.get("total_deaths_per_million"),
+										rec.get("total_vaccinations")
+										),
+								rec.get("hospital_beds_per_thousand"),
+								rec.get("population")
+								));
 					} catch (NumberFormatException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -205,13 +211,15 @@ public class DataAnalysis {
 		 			try {
 						countries.get(countries.size()-1).addDateStatus(
 									new DateStatus(
-											rec.get("date"),
+											rec.get("date"), 
 											rec.get("total_cases"),
+											rec.get("new_cases"),
 											rec.get("total_cases_per_million"),
 											rec.get("total_deaths"),
-											rec.get("total_deaths_per_million")
-											)
-								);
+											rec.get("new_deaths"),
+											rec.get("total_deaths_per_million"),
+											rec.get("total_vaccinations")
+								));
 					} catch (NumberFormatException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();
@@ -239,6 +247,9 @@ public class DataAnalysis {
 		 return setOfCountry;
 	 }
 	 
+	 /**
+	  * to be completed
+	  * */
 	 //Factory pattern
 	 @SuppressWarnings("resource")
 	public static Pair<Integer,Double> getDataOfCountry(String dataset,String iso_code,String date,String type) throws InvalidInputException {

@@ -1,5 +1,6 @@
 package comp3111.covid;
 
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -8,12 +9,8 @@ import javafx.beans.property.SimpleBooleanProperty;
 
 
 /**
- * @author thanhlampham
- * @version 1.0
  * This class representing a country with its data
- * {@value #name} name holds the name of the country
- * {@value #isDone} isDone indicates the country is selected or not
- * {@value #dateStatus} dateStatus is an array with each element holding a status for a specific date
+ * @author thanhlampham
  * */
 final public class Country {
 	/**
@@ -25,9 +22,13 @@ final public class Country {
      * */
     final BooleanProperty isDone = new SimpleBooleanProperty(false);
     /**
-     * array of status for each date
+     * an array with each element holding a status for a specific date
      * */
     private ArrayList<DateStatus> dateStatus = new ArrayList<DateStatus>();
+    
+    private double hospitalBedsNumPerThousands;
+    
+    private int population;
 
     /**
      * Constructor
@@ -35,11 +36,16 @@ final public class Country {
      * @param newDateStatus is a DateStatus object for a specific date
      * the constructor assign name and add newDateStatus to the dateStatus array
      * */
-    public Country(String name, DateStatus newDateStatus) {
+    public Country(String name, DateStatus newDateStatus, String hospitalBedsNumPerThousands, String population) throws ParseException {
         this.name = name;
         this.dateStatus.add(newDateStatus);
+        this.hospitalBedsNumPerThousands = Double.parseDouble(hospitalBedsNumPerThousands);
+        this.population = Integer.parseInt(population);
     }
 
+    /**
+     * @return name of country
+     * */
     @Override
     public String toString() {
         return name;
@@ -81,5 +87,12 @@ final public class Country {
     		}
     	}
     	return dateStatusToGet;
+    }
+    
+    public double getBedsNum() {
+    	return this.hospitalBedsNumPerThousands;
+    }
+    public int getPopulation() {
+    	return this.population;
     }
 }

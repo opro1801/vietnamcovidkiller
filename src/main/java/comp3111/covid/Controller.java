@@ -40,6 +40,10 @@ import java.time.LocalDate;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
+
+/**
+ * Controller for javafx UI that implements Initializable
+ * */
 public class Controller implements Initializable {
 	
 	private String dataset = "COVID_Dataset_v1.0.csv";
@@ -153,11 +157,10 @@ public class Controller implements Initializable {
     
     
     /**
-     * This method initialize data once the UI is loaded
+     * Initialize all the countries in the data set and fits the data to the ListView once the UI is loaded
+     * @param arg0 handled by javafx
+     * @param arg1 handled by javafx
      * 
-     * @param arg0 and arg1 are handled by javafx
-     * 
-     * This method gets all the countries in the data set and fits the data to the ListView
      * */
     
     @SuppressWarnings("unused")
@@ -272,24 +275,23 @@ public class Controller implements Initializable {
     	return result;
     }
     
+    @SuppressWarnings("unchecked")
+    @FXML
     /**
-     * This method triggered when a user click on the submit button on Chart A tab
-     * @param event is an event that a user click on submit button on Chart A tab
-     * 
-     * This method gets the start date, end date and the countries of interest
-     * Then validate the date and countries selected
-     * If the input entered are valid:
+     * Triggered when a user click on the submit button on Chart A tab, 
+     * gets the start date, end date and the countries of interest.
+     * Then validate the date and countries selected.
+     * If the input entered are valid: 
      * The method then generate the line chart showing the cumulative confirmed COVID-19 cases (per 1M)
      * with the x axis representing the dates and display with proper scale,
      * the y axis representing number of confirmed cases
      * for each selected country, the method retrieve the confirmed cases over the selected period
      * by getDateStatus method from Country class, adding to the series.
      * Then the series is displayed on the chart view
+     * @param event user click on submit button on Chart A tab
      * 
      * @throws ParseExceiption the method throws an exception if occurred when parsing the dates 
      * */
-    @SuppressWarnings("unchecked")
-    @FXML
     void doSubmitChartA(ActionEvent event) throws ParseException {
     
     	if(!chartDateValidation(startDateChartA, endDateChartA)) return;
