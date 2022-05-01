@@ -193,10 +193,9 @@ public class DataAnalysis {
 										rec.get("total_deaths"),
 										rec.get("new_deaths"),
 										rec.get("total_deaths_per_million"),
-										rec.get("total_vaccinations")
+										rec.get("total_vaccinations_per_hundred")
 										),
-								rec.get("hospital_beds_per_thousand"),
-								rec.get("population")
+								rec.get("hospital_beds_per_thousand")
 								));
 					} catch (NumberFormatException e) {
 						// TODO Auto-generated catch block
@@ -218,8 +217,8 @@ public class DataAnalysis {
 											rec.get("total_deaths"),
 											rec.get("new_deaths"),
 											rec.get("total_deaths_per_million"),
-											rec.get("total_vaccinations")
-								));
+											rec.get("total_vaccinations_per_hundred")
+											));
 					} catch (NumberFormatException e) {
 						// TODO Auto-generated catch block
 						e.printStackTrace();

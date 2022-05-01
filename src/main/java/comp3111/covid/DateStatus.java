@@ -36,7 +36,7 @@ public class DateStatus {
 	 * */
 	private double totalDeathsPerMillion;
 	
-	private int totalVaccinations;
+	private double totalVaccinationsPerHundred;
 	
 	/**
 	 * validates the information entered and set to 0 if the information does not exist
@@ -49,43 +49,43 @@ public class DateStatus {
 	 * @throws ParseException throws an exception when parsing sDate
 	 * */
 	public DateStatus (String sDate, String totalCases, String newCases, String totalCasesPerMillion,
-				String totalDeaths, String newDeaths, String totalDeathsPerMillion, String totalVaccinations
+				String totalDeaths, String newDeaths, String totalDeathsPerMillion, String totalVaccinationsPerHundred
 				) throws ParseException {
 		this.date = new SimpleDateFormat("MM/dd/yyyy").parse(sDate);
-		if(totalCases == null || totalCases == "") {
+		if(totalCases == null || totalCases.length() == 0) {
 			this.totalCases = 0;
 		} else {
 			this.totalCases = Integer.parseInt(totalCases);			
 		}
-		if(newCases == null || newCases == "") {
+		if(newCases == null || newCases.length() == 0) {
 			this.newCases = 0;
 		} else {
 			this.newCases = Integer.parseInt(newCases);			
 		}
-		if(totalCasesPerMillion == null || totalCasesPerMillion == "") {
+		if(totalCasesPerMillion == null || totalCasesPerMillion.length() == 0) {
 			this.totalCasesPerMillion = 0;
 		} else {
 			this.totalCasesPerMillion = Double.parseDouble(totalCasesPerMillion);			
 		}
-		if(totalDeaths == null || totalDeaths == "") {
+		if(totalDeaths == null || totalDeaths.length() == 0) {
 			this.totalDeaths = 0;
 		} else {
 			this.totalDeaths = Integer.parseInt(totalDeaths);
 		}
-		if(totalDeaths == null || totalDeaths == "") {
-			this.totalDeaths = 0;
+		if(newDeaths == null || newDeaths.length() == 0) {
+			this.newDeaths = 0;
 		} else {
-			this.totalDeaths = Integer.parseInt(totalDeaths);			
+			this.newDeaths = Integer.parseInt(newDeaths);			
 		}
-		if(totalDeathsPerMillion == null || totalDeathsPerMillion == "") {
+		if(totalDeathsPerMillion == null || totalDeathsPerMillion.length() == 0) {
 			this.totalDeathsPerMillion = 0;
 		} else {
 			this.totalDeathsPerMillion = Double.parseDouble(totalDeathsPerMillion);
 		}
-		if(totalVaccinations == null || totalVaccinations == "") {
-			this.totalVaccinations = 0;
+		if(totalVaccinationsPerHundred == null || totalVaccinationsPerHundred.length() == 0) {
+			this.totalVaccinationsPerHundred = 0;
 		} else {
-			this.totalVaccinations = Integer.parseInt(totalVaccinations);
+			this.totalVaccinationsPerHundred = Double.parseDouble(totalVaccinationsPerHundred);
 		}
 	}
 	
@@ -131,7 +131,7 @@ public class DateStatus {
 		return totalDeathsPerMillion;
 	}
 	
-	public int getTotalVaccinations() {
-		return totalVaccinations;
+	public double getTotalVaccinationsPerHundred() {
+		return totalVaccinationsPerHundred;
 	}
 }

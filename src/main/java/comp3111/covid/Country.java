@@ -1,5 +1,7 @@
 package comp3111.covid;
 
+import java.math.BigDecimal;
+import java.math.BigInteger;
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -29,7 +31,7 @@ final public class Country {
     
     private double hospitalBedsNumPerThousands;
     
-    private int population;
+//    private BigDecimal population;
 
     /**
      * Constructor
@@ -37,7 +39,7 @@ final public class Country {
      * @param newDateStatus is a DateStatus object for a specific date
      * the constructor assign name and add newDateStatus to the dateStatus array
      * */
-    public Country(String name, DateStatus newDateStatus, String hospitalBedsNumPerThousands, String population) throws ParseException {
+    public Country(String name, DateStatus newDateStatus, String hospitalBedsNumPerThousands) throws ParseException {
         this.name = name;
         this.dateStatus.add(newDateStatus);
         if(hospitalBedsNumPerThousands == null || hospitalBedsNumPerThousands.length() == 0) {
@@ -45,11 +47,11 @@ final public class Country {
         } else {
         	this.hospitalBedsNumPerThousands = Double.parseDouble(hospitalBedsNumPerThousands);        	
         }
-        if(population == null || population.length() == 0) {
-        	this.population = 0;
-        } else {
-        	this.population = Integer.parseInt(population);        	
-        }
+//        if(population == null || population.length() == 0) {
+//        	this.population = new BigDecimal("0");
+//        } else {
+//        	this.population = new BigDecimal(population);   
+//        }
     }
 
     /**
@@ -104,7 +106,7 @@ final public class Country {
     public double getBedsNum() {
     	return this.hospitalBedsNumPerThousands;
     }
-    public int getPopulation() {
-    	return this.population;
-    }
+//    public BigDecimal getPopulation() {
+//    	return this.population;
+//    }
 }

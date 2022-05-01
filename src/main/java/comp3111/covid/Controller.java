@@ -34,6 +34,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import javafx.util.StringConverter;
 
+import java.math.BigDecimal;
 import java.net.URL;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -130,6 +131,12 @@ public class Controller implements Initializable {
     private DatePicker startDateChartB;
     
     @FXML
+    private DatePicker endDateNewFea;
+    
+    @FXML
+    private DatePicker startDateNewFea;
+    
+    @FXML
     private ListView<Country> countriesChartB;
     
     @FXML
@@ -166,6 +173,19 @@ public class Controller implements Initializable {
     @FXML
     private Button AFTask1;
     
+    @FXML
+    private Button newFeaTask1;
+
+    @FXML
+    private Button newFeaTask2;
+    
+    @FXML
+    private Button newFeaTask3;
+
+    @FXML
+    private ComboBox<String> newFeatureCountry;
+    
+    
     @SuppressWarnings("unused")
 	@Override
     public void initialize(URL arg0, ResourceBundle arg1) {
@@ -195,6 +215,9 @@ public class Controller implements Initializable {
     	countriesTableB.setCellFactory(CheckBoxListCell.forListView((Country item )-> item.isDone ));
     	for(Country country:ListCountriesChartA) {
     		AFeatureCountry.getItems().add(country.name);
+    	}
+    	for(Country country:ListCountriesChartA) {
+    		newFeatureCountry.getItems().add(country.name);
     	}
     }
 
@@ -462,6 +485,113 @@ public class Controller implements Initializable {
     	consoleOutput.setContent(lineChartB);
     }
     
+    
+    @FXML
+    void doFeaTask1(ActionEvent event) throws ParseException {
+    	
+    	if(!singleCountryValidation(newFeatureCountry)) return;
+    	if(!chartDateValidation(startDateNewFea, endDateNewFea)) return;
+    	Date startDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(startDateNewFea.getValue().toString());
+    	Date endDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(endDateNewFea.getValue().toString());
+    	
+    	final NumberAxis yAxis = new NumberAxis();
+    	final NumberAxis xAxis = new NumberAxis();
+    	
+    	yAxis.setLowerBound(0);
+    	final LineChart<Number, Number> lineChartFeaTask1 = new LineChart<Number, Number>(xAxis, yAxis);
+    	lineChartFeaTask1.setTitle("Correlation of vaccination rate and confirmed cases");
+    	
+    	for(Country country : listChartA) {
+    		if(country.name.equals(newFeatureCountry.getValue())) {
+    			XYChart.Series<Number, Number> series = new XYChart.Series<>();
+    			series.setName(country.name);
+    			for(DateStatus status: country.getDateStatus()) {
+    				if(status.getDate().equals(startDateObj) || status.getDate().equals(endDateObj)
+    				|| (status.getDate().after(startDateObj) && status.getDate().before(endDateObj)))
+    				{
+        				series.getData().add(new XYChart.Data(status.getTotalVaccinationsPerHundred(),
+        						status.getNewCases()));	
+    				}
+    			}
+    			lineChartFeaTask1.getData().add(series);
+    			lineChartFeaTask1.setCreateSymbols(false);
+    		}
+    	}
+    	consoleOutput.setContent(lineChartFeaTask1);
+    }
+
+    @FXML
+    void doFeaTask2(ActionEvent event) throws ParseException {
+
+    	if(!singleCountryValidation(newFeatureCountry)) return;
+    	if(!chartDateValidation(startDateNewFea, endDateNewFea)) return;
+    	Date startDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(startDateNewFea.getValue().toString());
+    	Date endDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(endDateNewFea.getValue().toString());
+    	
+    	final NumberAxis yAxis = new NumberAxis();
+    	final NumberAxis xAxis = new NumberAxis();
+    	
+    	yAxis.setLowerBound(0);
+    	final LineChart<Number, Number> lineChartFeaTask2 = new LineChart<Number, Number>(xAxis, yAxis);
+    	lineChartFeaTask2.setTitle("Correlation of vaccination rate and confirmed deaths");
+    	
+    	for(Country country : listChartA) {
+    		if(country.name.equals(newFeatureCountry.getValue())) {
+    			XYChart.Series<Number, Number> series = new XYChart.Series<>();
+    			series.setName(country.name);
+    			for(DateStatus status: country.getDateStatus()) {
+    				if(status.getDate().equals(startDateObj) || status.getDate().equals(endDateObj)
+    				|| (status.getDate().after(startDateObj) && status.getDate().before(endDateObj)))
+    				{
+        				series.getData().add(new XYChart.Data(status.getTotalVaccinationsPerHundred(),
+        						status.getNewDeaths()));	
+    				}
+    			}
+    			lineChartFeaTask2.getData().add(series);
+    			lineChartFeaTask2.setCreateSymbols(false);
+    		}
+    	}
+    	consoleOutput.setContent(lineChartFeaTask2);
+    }
+    
+    @FXML
+    void doFeaTask3(ActionEvent event) throws ParseException {
+    	if(!singleCountryValidation(newFeatureCountry)) return;
+    	if(!chartDateValidation(startDateNewFea, endDateNewFea)) return;
+    	Date startDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(startDateNewFea.getValue().toString());
+    	Date endDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(endDateNewFea.getValue().toString());
+    	
+    	final NumberAxis yAxis = new NumberAxis();
+    	final NumberAxis xAxis = new NumberAxis();
+    	
+    	yAxis.setLowerBound(0);
+    	final LineChart<Number, Number> lineChartFeaTask3 = new LineChart<Number, Number>(xAxis, yAxis);
+    	lineChartFeaTask3.setTitle("Correlation of vaccination rate and confirmed cases and deaths");
+    	
+    	for(Country country : listChartA) {
+    		if(country.name.equals(newFeatureCountry.getValue())) {
+    			XYChart.Series<Number, Number> series = new XYChart.Series<>();
+    			series.setName(country.name + " vaccination rate vs deaths");
+    			XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
+    			series2.setName(country.name + " vaccination rate vs cases");
+    			for(DateStatus status: country.getDateStatus()) {
+    				if(status.getDate().equals(startDateObj) || status.getDate().equals(endDateObj)
+    	    				|| (status.getDate().after(startDateObj) && status.getDate().before(endDateObj))){
+    				series.getData().add(new XYChart.Data(status.getTotalVaccinationsPerHundred(),
+    	        			status.getNewDeaths()));	
+    				series2.getData().add(new XYChart.Data(status.getTotalVaccinationsPerHundred(),
+    						status.getNewCases()));
+    	    		}
+    			}
+    			
+    			lineChartFeaTask3.getData().add(series);
+    			lineChartFeaTask3.getData().add(series2);
+    			lineChartFeaTask3.setCreateSymbols(false);
+    		}
+    	}
+    	consoleOutput.setContent(lineChartFeaTask3);
+    }
+    
     @FXML
     void DoAFTask2(ActionEvent event) {
     	final NumberAxis yAxis = new NumberAxis();
@@ -638,6 +768,23 @@ public class Controller implements Initializable {
     		alert.showAndWait();
     		return false;
     	}
+    	return true;
+    }
+    
+    boolean singleCountryValidation(ComboBox<String> country) {
+    	String countryWarning = "You must select a country!";
+    	String countryWarningTitle = "No country have been selected";
+    	Alert alert = new Alert(AlertType.WARNING, "");
+    	alert.initModality(Modality.APPLICATION_MODAL);
+    	alert.initOwner(consoleOutput.getScene().getWindow());
+    	alert.getDialogPane().setHeaderText(countryWarningTitle);
+    	alert.getDialogPane().setContentText(countryWarning);
+    	
+    	if(country.getValue() == null) {
+    		alert.showAndWait();
+    		return false;
+    	}
+    	
     	return true;
     }
     
