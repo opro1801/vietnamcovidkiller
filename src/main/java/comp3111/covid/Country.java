@@ -21,6 +21,7 @@ final public class Country {
      * whether this country is selected
      * */
     final BooleanProperty isDone = new SimpleBooleanProperty(false);
+
     /**
      * an array with each element holding a status for a specific date
      * */

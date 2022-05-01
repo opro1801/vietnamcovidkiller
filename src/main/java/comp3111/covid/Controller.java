@@ -16,6 +16,7 @@ import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.DatePicker;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
@@ -155,13 +156,15 @@ public class Controller implements Initializable {
     @FXML
     private DatePicker dateTableB;
     
+
+    @FXML
+    private ComboBox<String> AFeatureCountry;
     
-    /**
-     * Initialize all the countries in the data set and fits the data to the ListView once the UI is loaded
-     * @param arg0 handled by javafx
-     * @param arg1 handled by javafx
-     * 
-     * */
+    @FXML
+    private Button AFTask2;
+    
+    @FXML
+    private Button AFTask1;
     
     @SuppressWarnings("unused")
 	@Override
@@ -190,6 +193,9 @@ public class Controller implements Initializable {
     	countriesTableB.getItems().addAll(listTableB);
     	countriesTableB.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
     	countriesTableB.setCellFactory(CheckBoxListCell.forListView((Country item )-> item.isDone ));
+    	for(Country country:ListCountriesChartA) {
+    		AFeatureCountry.getItems().add(country.name);
+    	}
     }
 
     @FXML
@@ -200,7 +206,33 @@ public class Controller implements Initializable {
     
     @FXML
     void doSubmitTabelA(ActionEvent event) throws ParseException{
+    	//Get date
     	Date interestDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateTableA.getValue().toString());
+    	AlertType type = AlertType.ERROR;
+    	Alert alert = new Alert(type, "");
+    	
+    	//Error handling
+    	//Error message
+    	String firstMessage = "The date must be after the date of first COVID 19 case (November 17,2019)";
+    	String secondMessage = "The date must be not after the current date (July 20,2021)";
+    	alert.initModality(Modality.APPLICATION_MODAL);
+    	alert.initOwner(consoleOutput.getScene().getWindow());
+    	//alert.getDialogPane().setContentText("The date must be after the date of first COVID 19 case (November 17,2019)");
+    	alert.getDialogPane().setHeaderText("Date Error");
+    	// Base on information we can get the first case is this
+    	Date firstDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2019,11,17).toString());
+    	Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2021,7,20).toString());
+    	
+    	if(interestDate.before(firstDate)) {
+    		alert.getDialogPane().setContentText(firstMessage);
+    		alert.showAndWait();
+    		return;
+    	}
+    	if(interestDate.after(lastDate)) {
+    		alert.getDialogPane().setContentText(secondMessage);
+    		alert.showAndWait();
+    		return;
+    	}
     	selectedCountriesTableA = countriesTableA.getItems().filtered((Country item)->item.isDone.get());
     	String iDataset = textfieldDataset.getText();
     	SimpleDateFormat dateFormat= new SimpleDateFormat("MMM dd,yyyy");
@@ -239,7 +271,34 @@ public class Controller implements Initializable {
     
     @FXML
     void doSubmitTabelB(ActionEvent event) throws ParseException{
+    	//Get date
     	Date interestDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateTableB.getValue().toString());
+    	AlertType type = AlertType.ERROR;
+    	Alert alert = new Alert(type, "");
+    	
+    	//Error handling
+    	//Error message
+    	String firstMessage = "The date must be after the date of first COVID 19 case (November 17,2019)";
+    	String secondMessage = "The date must be not after the current date (July 20,2021)";
+    	alert.initModality(Modality.APPLICATION_MODAL);
+    	alert.initOwner(consoleOutput.getScene().getWindow());
+    	//alert.getDialogPane().setContentText("The date must be after the date of first COVID 19 case (November 17,2019)");
+    	alert.getDialogPane().setHeaderText("Date Error");
+    	// Base on information we can get the first case is this
+    	Date firstDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2019,11,17).toString());
+    	Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2021,7,20).toString());
+    	
+    	if(interestDate.before(firstDate)) {
+    		alert.getDialogPane().setContentText(firstMessage);
+    		alert.showAndWait();
+    		return;
+    	}
+    	if(interestDate.after(lastDate)) {
+    		alert.getDialogPane().setContentText(secondMessage);
+    		alert.showAndWait();
+    		return;
+    	}
+    	
     	selectedCountriesTableB = countriesTableB.getItems().filtered((Country item)->item.isDone.get());
     	String iDataset = textfieldDataset.getText();
     	SimpleDateFormat dateFormat= new SimpleDateFormat("MMM dd,yyyy");
@@ -403,7 +462,36 @@ public class Controller implements Initializable {
     	consoleOutput.setContent(lineChartB);
     }
     
-    
+    @FXML
+    void DoAFTask2(ActionEvent event) {
+    	final NumberAxis yAxis = new NumberAxis();
+    	final NumberAxis xAxis = new NumberAxis();
+
+    	System.out.println(AFeatureCountry.getValue());
+        final LineChart<Number, Number> lineChartAF2 = new LineChart<Number, Number>(xAxis, yAxis);
+        lineChartAF2.setTitle("Correlation of deaths case and confirm cases");
+        
+    	for(Country country : listChartA) {
+    		System.out.println(country.name);
+    		if(country.name.equals(AFeatureCountry.getValue()))
+    		{
+    			System.out.println("Helllooooo");
+	    		XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
+	    		series.setName(country.name);
+	    		for(DateStatus status: country.dateStatus) {
+	    			series.getData().add(new XYChart.Data(status.getTotalCasesPerMillion(),status.getTotalDeathsPerMillion()));
+	    		}
+	    		lineChartAF2.getData().add(series);
+	    		lineChartAF2.setCreateSymbols(false);
+    		}
+    	}
+
+    	consoleOutput.setContent(lineChartAF2);
+    }
+    @FXML
+    void DoAFTask1(ActionEvent event) {
+    	
+    }
     /**
      *  Task Zero
      *  To be triggered by the "Confirmed Cases" button on the Task Zero Tab 
@@ -444,6 +532,7 @@ public class Controller implements Initializable {
     	String oReport = DataAnalysis.getRateOfVaccination(iDataset, iISO);
     	consoleOutput.setContent(new TextArea(oReport));
     }  
+    
 
     int getTimeInt(Date date) {
 //    	long current = status.getDate().getTime();

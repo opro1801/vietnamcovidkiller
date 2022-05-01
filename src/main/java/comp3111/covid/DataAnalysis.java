@@ -253,33 +253,23 @@ public class DataAnalysis {
 	 //Factory pattern
 	 @SuppressWarnings("resource")
 	public static Pair<Integer,Double> getDataOfCountry(String dataset,String iso_code,String date,String type) throws InvalidInputException {
-		 //int total_death = 0;
-		// System.out.println("Haha");
-		// System.out.println(iso_code);
-		// System.out.println(date);
-		 boolean too_early = false;
-		 //System.out.println("Haha");
+
 		 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMM dd,yyyy");
-		// System.out.println("Haha");
+
 	     LocalDate localDate = LocalDate.parse(date, formatter);
-	     //System.out.println("Haha");
-	     if(localDate.isAfter(LocalDate.of(2021, 07, 20))) {
-				throw new InvalidInputException("Too late date");
-		}
-	     //System.out.println("Haha");
-	     System.out.println("Why get here");
+
 	     for (CSVRecord rec : getFileParser(dataset)) {
-	    	// System.out.println("Why dont get here");
-	    	// System.out.println(rec.get("iso_code"));
+	    	 int count=0;
 	    	 if (rec.get("iso_code").equals(iso_code)) {
-	    	//	System.out.println("Get there");
+	    		
 				String get_date = rec.get("date").strip();
 				DateTimeFormatter formatters = DateTimeFormatter.ofPattern("M/d/yyyy");
 				LocalDate this_date = LocalDate.parse(get_date, formatters);
-				
-				if(!too_early && localDate.isBefore(this_date)) {
-					too_early = true;
-					throw new InvalidInputException("Too early date, no deaths");
+				if(count==0) {
+					if(localDate.isBefore(this_date)) {
+						return new Pair<Integer,Double>(0,0.0);
+					}
+					count++;
 				}
 				if(localDate.isEqual(this_date)) {
 					//Factory here
