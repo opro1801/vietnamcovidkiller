@@ -23,12 +23,23 @@ import java.util.ArrayList;
  */
 public class DataAnalysis {
  
+	/**
+	 * @param dataset is the name of the dataset
+	 * @return get the parser for the selected file
+	 * */
+	
 	public static CSVParser getFileParser(String dataset) {
 	     FileResource fr = new FileResource("dataset/" + dataset);
 	     return fr.getCSVParser(true);
 		}
 	
-
+	/**
+	 * @param dataset is the name of the dataset
+	 * @param iso_code is an iso_code for the selected country
+	 * This method read the dataset and form a report about total number of record,
+	 * number of confirmed cases and number of days reported for a selected country
+	 * @return oReport is the report in String
+	 * */
 	public static String getConfirmedCases(String dataset, String iso_code) {
 		String oReport = "";	
 		long confirmedCases = 0;
@@ -55,6 +66,13 @@ public class DataAnalysis {
 		return oReport;
 	}
 	
+	/**
+	 * @param dataset is the name of the dataset
+	 * @param iso_code is an iso_code for the selected country
+	 * This method read the dataset and form a report about total number of record,
+	 * number of confirmed deaths and number of days reported for a selected country
+	 * @return oReport is the report in String
+	 * */
 	 public static String getConfirmedDeaths(String dataset, String iso_code) {
 			String oReport = "";	
 			long confirmedDeaths = 0;
@@ -81,6 +99,15 @@ public class DataAnalysis {
 			return oReport;
 	 }
 	 
+	 
+	/**
+	 * @param dataset is the name of the dataset
+	 * @param iso_code is an iso_code for the selected country
+	 * This method read the dataset and form a report about total number of record,
+	 * number of fully vaccinated people, population, rate of vaccination 
+	 * and number of days reported for a selected country
+	 * @return oReport is the report in String
+	 * */	 
 	 public static String getRateOfVaccination(String dataset, String iso_code) {
 			String oReport = "";	
 			long fullyVaccinated = 0;
@@ -116,7 +143,12 @@ public class DataAnalysis {
 			
 			return oReport;
 	 }
-	 
+	
+	/**
+	* @param dataset is the name of the dataset
+	* @param iso_code is an iso_code for the selected country
+	* @return confirmedCases is the number of confirmed cases for the selected country
+	* */
 	 public static long getNumberOfConfirmedCases(String dataset, String iso_code) {
 			long confirmedCases = 0;
 			
@@ -133,6 +165,17 @@ public class DataAnalysis {
 			return confirmedCases;
 	 }
 	 
+	 
+	 /**
+	  * @author thanhlampham
+	  * @param dataset is the selected dataset
+	  * This method read the dataset then check whether a country is already in the list
+	  * If not, create new instance of country for the corresponding country with the 
+	  * current reading date status and add it to the countries list
+	  * If the country is already in the list, then add the current reading date status
+	  * to the country
+	  * @return countries is a list of Country objects holding information for all countries
+	  * */
 	 public static ArrayList<Country> getAllCountries(String dataset) {
 		 	long numberCountries = 0;
 		    ArrayList<Country> countries = new ArrayList<Country>();
@@ -182,6 +225,10 @@ public class DataAnalysis {
 	 }
 	 
 	 
+	 /**
+	  * @param dataset is the current dataset
+	  * @return setOfCountry is a hash map with key is the name of country and the value is iso_code
+	  * */
 	 public static HashMap<String, String> getListOfCountry(String dataset) {
 		 HashMap<String, String> setOfCountry = new HashMap<>();
 		 for (CSVRecord rec : getFileParser(dataset)) {

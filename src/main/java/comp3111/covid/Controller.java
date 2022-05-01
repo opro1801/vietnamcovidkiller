@@ -43,14 +43,19 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
 	
 	private String dataset = "COVID_Dataset_v1.0.csv";
-	
-//	ObservableList<Country> list = FXCollections.observableArrayList();
 
+	/**
+	 * Lists holding the current selected countries of each task
+	 * */
 	ObservableList<Country> selectedCountriesChartA = FXCollections.observableArrayList();
 	ObservableList<Country> selectedCountriesChartB = FXCollections.observableArrayList();
 	ObservableList<Country> selectedCountriesTableA = FXCollections.observableArrayList();
 	ObservableList<Country> selectedCountriesTableB = FXCollections.observableArrayList();
 	
+	
+	/**
+	 * Lists holding the total countries in each task
+	 * */
 	ObservableList<Country> listChartA = FXCollections.observableArrayList(item	-> { return new Observable[] { item.isDone }; });
 	ObservableList<Country> listChartB = FXCollections.observableArrayList(item	-> { return new Observable[] { item.isDone }; });
 	ObservableList<Country> listTableA = FXCollections.observableArrayList(item	-> { return new Observable[] { item.isDone }; });
@@ -152,8 +157,7 @@ public class Controller implements Initializable {
      * 
      * @param arg0 and arg1 are handled by javafx
      * 
-     * This method gets all the countries in the dataset and fits the data to the ListView
-     * 
+     * This method gets all the countries in the data set and fits the data to the ListView
      * */
     
     @SuppressWarnings("unused")
@@ -273,13 +277,16 @@ public class Controller implements Initializable {
      * @param event is an event that a user click on submit button on Chart A tab
      * 
      * This method gets the start date, end date and the countries of interest
-     * check if the period is valid and at least one country is selected
+     * Then validate the date and countries selected
+     * If the input entered are valid:
      * The method then generate the line chart showing the cumulative confirmed COVID-19 cases (per 1M)
      * with the x axis representing the dates and display with proper scale,
      * the y axis representing number of confirmed cases
      * for each selected country, the method retrieve the confirmed cases over the selected period
      * by getDateStatus method from Country class, adding to the series.
      * Then the series is displayed on the chart view
+     * 
+     * @throws ParseExceiption the method throws an exception if occurred when parsing the dates 
      * */
     @SuppressWarnings("unchecked")
     @FXML
@@ -329,6 +336,23 @@ public class Controller implements Initializable {
     	consoleOutput.setContent(lineChart);
     }
     
+    
+    /**
+     * This method triggered when a user click on the submit button on Chart B tab
+     * @param event is an event that a user click on submit button on Chart B tab
+     * 
+     * This method gets the start date, end date and the countries of interest
+     * Then validate the date and countries selected
+     * If the input entered are valid:
+     * The method then generate the line chart showing the cumulative confirmed COVID-19 deaths (per 1M)
+     * with the x axis representing the dates and display with proper scale,
+     * the y axis representing number of confirmed cases
+     * for each selected country, the method retrieve the death over the selected period
+     * by getDateStatus method from Country class, adding to the series.
+     * Then the series is displayed on the chart view
+     * 
+     * @throws ParseExceiption the method throws an exception if occurred when parsing the dates 
+     * */
     @SuppressWarnings("unchecked")
     @FXML
     void doSubmitChartB(ActionEvent event) throws ParseException {
@@ -432,11 +456,27 @@ public class Controller implements Initializable {
     	return date;
     }
     
+    
+    /**
+     * @param startDate is the DatePicker object for start date on the UI of the current task
+     * @param endDate is the DatePicker object for end date on the UI of the current task
+     * @return true if the date input is valid
+     * @return false if the date input is invalid
+     * @throws ParseException throws an exception when parsing a date string
+     * 
+     * The method check if the start date and end date have been entered and entered correctly
+     * Then check if the end date is after the start date
+     * Then check if the period entered is within the period with data available in current data set
+     * If a condition is not satisfied, then display a corresponding alert
+     */
+    
     boolean chartDateValidation(DatePicker startDate, DatePicker endDate) throws ParseException {
     	String firstMessage = "The period should be after the date of first COVID 19 case (November 17,2019)";
     	String secondMessage = "The period should be before the current date (July 20,2021)";
     	String thirdMessage = "Start Date must be less then End Date!";
     	String dateWarningTitle = "Date Is Invalid";
+    	String startDateWarning = "A valid start date must be selected!";
+    	String endDateWarning = "A valid end date must be selected!";
     	
     	Alert alert = new Alert(AlertType.ERROR, "");
     	alert.initModality(Modality.APPLICATION_MODAL);
@@ -447,13 +487,13 @@ public class Controller implements Initializable {
 
     	
     	if(startDate.getValue() == null) {
-    		alert.getDialogPane().setContentText("A valid start date must be selected!");
+    		alert.getDialogPane().setContentText(startDateWarning);
     		alert.showAndWait();
     		return false;
     	}
     	
     	if(endDate.getValue() == null) {
-    		alert.getDialogPane().setContentText("A valid end date must be selected!");
+    		alert.getDialogPane().setContentText(endDateWarning);
     		alert.showAndWait();
     		return false;
     	}
@@ -483,6 +523,17 @@ public class Controller implements Initializable {
     	return true;
     }
     
+    
+    /**
+     * This method takes the current selected countries list
+     * @param list can be the selected countries list of chart A,B or table A,B
+     * 
+     * @return this method return true if the condition is satisfied
+     * @return if no country have been selected, a warning alert box will be displayed and return false
+     * 
+     * This method validates the input countries of interest and check if at
+     * least one country is selected then trigger a warning
+     * */
     boolean countryValidation(ObservableList<Country> list) {
     	String countryWarning = "You should select at least one country!";
     	String countryWarningTitle = "No country have been selected";
