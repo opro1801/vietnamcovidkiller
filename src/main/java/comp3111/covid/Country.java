@@ -9,7 +9,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 final public class Country {
     final String name;
     final BooleanProperty isDone = new SimpleBooleanProperty(false);
-    private ArrayList<DateStatus> dateStatus = new ArrayList<DateStatus>();
+    public ArrayList<DateStatus> dateStatus = new ArrayList<DateStatus>();
 
     public Country(String name, DateStatus newDateStatus) {
         this.name = name;
