@@ -478,7 +478,7 @@ public class Controller implements Initializable {
     			System.out.println("Helllooooo");
 	    		XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
 	    		series.setName(country.name);
-	    		for(DateStatus status: country.dateStatus) {
+	    		for(DateStatus status: country.getDateStatus()) {
 	    			series.getData().add(new XYChart.Data(status.getTotalCasesPerMillion(),status.getTotalDeathsPerMillion()));
 	    		}
 	    		lineChartAF2.getData().add(series);
