@@ -40,8 +40,16 @@ final public class Country {
     public Country(String name, DateStatus newDateStatus, String hospitalBedsNumPerThousands, String population) throws ParseException {
         this.name = name;
         this.dateStatus.add(newDateStatus);
-        this.hospitalBedsNumPerThousands = Double.parseDouble(hospitalBedsNumPerThousands);
-        this.population = Integer.parseInt(population);
+        if(hospitalBedsNumPerThousands == null || hospitalBedsNumPerThousands.length() == 0) {
+        	this.hospitalBedsNumPerThousands = 0;
+        } else {
+        	this.hospitalBedsNumPerThousands = Double.parseDouble(hospitalBedsNumPerThousands);        	
+        }
+        if(population == null || population.length() == 0) {
+        	this.population = 0;
+        } else {
+        	this.population = Integer.parseInt(population);        	
+        }
     }
 
     /**
@@ -90,6 +98,9 @@ final public class Country {
     	return dateStatusToGet;
     }
     
+    public ArrayList<DateStatus> getDateStatus() {
+    	return this.dateStatus;
+    }
     public double getBedsNum() {
     	return this.hospitalBedsNumPerThousands;
     }
