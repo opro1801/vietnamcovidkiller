@@ -355,7 +355,7 @@ public class Controller implements Initializable {
     	result.prefWidthProperty().bind(consoleOutput.widthProperty());
 
     	List<String> chosenCountries = chosenBCountry();
-    	System.out.println("Chosen country is"+chosenCountries);
+    	//System.out.println("Chosen country is"+chosenCountries);
     	result.setItems(TableHelper.getModels(chosenCountries,iDataset,date,"deaths"));
     	// set title
     	final Label label = new Label("Number of Confirmed COVID-19 Deaths as of "+date);
@@ -520,7 +520,7 @@ public class Controller implements Initializable {
         lineChartAF2.setTitle("Correlation of deaths case and confirm cases");
         
     	for(Country country : listChartA) {
-    		System.out.println(country.name);
+    		//System.out.println(country.name);
     		if(country.name.equals(AFeatureCountry.getValue()))
     		{
     			// compute linear regression line
