@@ -6,7 +6,7 @@ import java.util.Date;
 
 
 /**
- * this class holding information for a specific date
+ * holding total cases, total cases per million, new cases, total deaths, total deaths per million, new deaths and total vaccinations per hundred for a specific date
  * @author thanhlampham
  * */
 public class DateStatus {
@@ -91,6 +91,7 @@ public class DateStatus {
 	
 	
 	/**
+	 * Getter for date
 	 * @return {@link #date}
 	 * */
 	public Date getDate() {
@@ -98,6 +99,7 @@ public class DateStatus {
 	}
 	
 	/**
+	 * Getter for total cases
 	 * @return {@link #totalCases}
 	 * */
 	public int getTotalCases() {
@@ -107,6 +109,7 @@ public class DateStatus {
 		return newCases;
 	}
 	/**
+	 * Getter for totalCasesPerMillion
 	 * @return {@link #totalCasesPerMillion}
 	 * */
 	public double getTotalCasesPerMillion() {
@@ -114,23 +117,32 @@ public class DateStatus {
 	}
 	
 	/**
+	 * Getter for totalDeaths
 	 * @return {@link #totalDeaths}
 	 * */
 	public int getTotalDeaths() {
 		return totalDeaths;
 	}
-	
+	/**
+	 * Getter for newDeaths
+	 * @return {@link #newDeaths}
+	 * */
 	public int getNewDeaths() {
 		return newDeaths;
 	}
 	
 	/**
+	 * Getter for totaDeathsPerMillion
 	 * @return {@link #totalDeathsPerMillion}
 	 * */
 	public double getTotalDeathsPerMillion() {
 		return totalDeathsPerMillion;
 	}
 	
+	/**
+	 * Getter for totalVaccinationsPerHundred
+	 * @return {@link #totalVaccinationsPerHundred}
+	 * */
 	public double getTotalVaccinationsPerHundred() {
 		return totalVaccinationsPerHundred;
 	}
