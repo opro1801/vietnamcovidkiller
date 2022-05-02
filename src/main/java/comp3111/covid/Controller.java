@@ -406,10 +406,8 @@ public class Controller implements Initializable {
     
     
     /**
-     * This method triggered when a user click on the submit button on Chart B tab
-     * @param event is an event that a user click on submit button on Chart B tab
-     * 
-     * This method gets the start date, end date and the countries of interest
+     * Triggered when a user click on the submit button on Chart B tab
+     * Gets the start date, end date and the countries of interest
      * Then validate the date and countries selected
      * If the input entered are valid:
      * The method then generate the line chart showing the cumulative confirmed COVID-19 deaths (per 1M)
@@ -418,7 +416,7 @@ public class Controller implements Initializable {
      * for each selected country, the method retrieve the death over the selected period
      * by getDateStatus method from Country class, adding to the series.
      * Then the series is displayed on the chart view
-     * 
+     * @param event is an event that a user click on submit button on Chart B tab 
      * @throws ParseExceiption the method throws an exception if occurred when parsing the dates 
      * */
     @SuppressWarnings("unchecked")
@@ -672,16 +670,16 @@ public class Controller implements Initializable {
     
     
     /**
+     * Validation for the date input. 
+     * Check if the start date and end date have been entered and entered correctly. 
+     * Then check if the end date is after the start date. 
+     * Then check if the period entered is within the period with data available in current data set. 
+     * If a condition is not satisfied, then display a corresponding alert.
      * @param startDate is the DatePicker object for start date on the UI of the current task
      * @param endDate is the DatePicker object for end date on the UI of the current task
      * @return true if the date input is valid
      * @return false if the date input is invalid
      * @throws ParseException throws an exception when parsing a date string
-     * 
-     * The method check if the start date and end date have been entered and entered correctly
-     * Then check if the end date is after the start date
-     * Then check if the period entered is within the period with data available in current data set
-     * If a condition is not satisfied, then display a corresponding alert
      */
     
     boolean chartDateValidation(DatePicker startDate, DatePicker endDate) throws ParseException {
@@ -739,14 +737,10 @@ public class Controller implements Initializable {
     
     
     /**
-     * This method takes the current selected countries list
+     * Validates the input countries of interest and check if at least one country is selected then trigger a warning
      * @param list can be the selected countries list of chart A,B or table A,B
-     * 
      * @return this method return true if the condition is satisfied
      * @return if no country have been selected, a warning alert box will be displayed and return false
-     * 
-     * This method validates the input countries of interest and check if at
-     * least one country is selected then trigger a warning
      * */
     boolean countryValidation(ObservableList<Country> list) {
     	String countryWarning = "You should select at least one country!";
@@ -764,6 +758,12 @@ public class Controller implements Initializable {
     	return true;
     }
     
+    /**
+     * Validates if a country is selected
+     * @param country is the ComboBox object of the UI for selecting a country
+     * @return true if a country is selected
+     * @return false if no country is selected and show an alert
+     * */
     boolean singleCountryValidation(ComboBox<String> country) {
     	String countryWarning = "You must select a country!";
     	String countryWarningTitle = "No country have been selected";
