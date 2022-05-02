@@ -27,7 +27,7 @@ final public class Country {
     /**
      * an array with each element holding a status for a specific date
      * */
-    private ArrayList<DateStatus> dateStatus = new ArrayList<DateStatus>();
+    ArrayList<DateStatus> dateStatus = new ArrayList<DateStatus>();
     
     private double hospitalBedsNumPerThousands;
     
