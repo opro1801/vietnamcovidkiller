@@ -36,6 +36,7 @@ import javafx.util.StringConverter;
 
 import java.math.BigDecimal;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -162,22 +163,14 @@ public class Controller implements Initializable {
     private ComboBox<String> AFeatureCountry;
     
     @FXML
-    private Button AFTask2;
-    
-    @FXML
     private Button AFTask1;
     
     @FXML
-    private Button newFeaTask1;
-
-    @FXML
-    private Button newFeaTask2;
+    private Button AFTask2;
     
     @FXML
-    private Button newFeaTask3;
+    private Button AFTask3;
 
-    @FXML
-    private ComboBox<String> newFeatureCountry;
     
     
     @SuppressWarnings("unused")
@@ -209,9 +202,6 @@ public class Controller implements Initializable {
     	countriesTableB.setCellFactory(CheckBoxListCell.forListView((Country item )-> item.isDone ));
     	for(Country country:ListCountriesChartA) {
     		AFeatureCountry.getItems().add(country.name);
-    	}
-    	for(Country country:ListCountriesChartA) {
-    		newFeatureCountry.getItems().add(country.name);
     	}
     }
 
@@ -479,11 +469,80 @@ public class Controller implements Initializable {
     	consoleOutput.setContent(lineChartB);
     }
     
+    @FXML
+    void DoAFTask1(ActionEvent event) {
+    	if(!singleCountryValidation(AFeatureCountry)) return;
+    	final NumberAxis yAxis = new NumberAxis();
+    	final NumberAxis xAxis = new NumberAxis();
+
+    	//System.out.println(AFeatureCountry.getValue());
+        final LineChart<Number, Number> lineChartAF2 = new LineChart<Number, Number>(xAxis, yAxis);
+        lineChartAF2.setTitle("Correlation of deaths case and confirm cases");
+        
+    	for(Country country : listChartA) {
+    		System.out.println(country.name);
+    		if(country.name.equals(AFeatureCountry.getValue()))
+    		{
+    			// compute linear regression line
+    			double sum_x = 0;
+    			double sum_x_square = 0;
+    			double sum_xy = 0;
+    			double sum_y=0;
+    			int number = 0;
+    			//System.out.println("Helllooooo");
+	    		XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
+	    		XYChart.Series<Number, Number> series2 = new XYChart.Series<Number, Number>();
+	    		XYChart.Series<Number, Number> series3 = new XYChart.Series<Number, Number>();
+	    		ArrayList<DateStatus> cur = country.dateStatus;
+	    		series.setName(country.name);
+	    		for(DateStatus status:cur) {
+	    			double x_value = status.getTotalCasesPerMillion();
+	    			double y_value = status.getTotalDeathsPerMillion();
+	    			series.getData().add(new XYChart.Data(x_value,y_value));
+	    			sum_x+=x_value;
+	    			sum_x_square+= x_value*x_value;
+	    			sum_y+=y_value;
+	    			sum_xy+=x_value*y_value;
+	    			number+=1;
+	    			
+	    		}
+	    		series.setName("Correlation between total case permillion and total death permillion");
+	    		//System.out.println(cur.get(cur.size()-1).getTotalCasesPerMillion() +"and"+cur.get(cur.size()-1).getTotalCasesPerMillion());
+	    		double a_value = (sum_y*sum_x_square-sum_x*sum_xy)/(number*sum_x_square - sum_x*sum_x);
+	    		double b_value = (number*sum_xy-sum_x*sum_y)/(number*sum_x_square-sum_x*sum_x);
+	    		if(a_value>0) {
+	    			series2.getData().add(new XYChart.Data<>(0.0,a_value));
+	    		}
+	    		else {
+	    			series2.getData().add(new XYChart.Data<>(-a_value/b_value,0));
+	    		}
+	    		double final_val = cur.get(cur.size()-1).getTotalDeathsPerMillion();
+	    		series2.getData().add(new XYChart.Data<>((final_val-a_value)/b_value,final_val));
+	    		series3.getData().add(new XYChart.Data<>(country.getBedsNum()*1000,0.0));
+	    		series3.getData().add(new XYChart.Data<>(country.getBedsNum()*1000,cur.get(cur.size()-1).getTotalDeathsPerMillion()));
+	    		
+	    		DecimalFormat df = new DecimalFormat("#.####");
+	    		if(a_value>0) {
+	    			series2.setName("Regression line model formula : "+df.format(b_value)+"x+"+df.format(a_value));
+	    		}
+	    		else {
+	    			series2.setName("Regression line model formula : "+df.format(b_value)+"x "+df.format(a_value));
+	    		}
+	    		series3.setName("Number of bed in hospital per million "+(country.getBedsNum()*1000));
+	    		lineChartAF2.getData().add(series3);
+	    		lineChartAF2.getData().add(series2);
+	    		lineChartAF2.getData().add(series);
+	    		lineChartAF2.setCreateSymbols(false);
+    		}
+    	}
+
+    	consoleOutput.setContent(lineChartAF2);
+    }
     
     @FXML
-    void doFeaTask1(ActionEvent event) throws ParseException {
+    void DoAFTask2(ActionEvent event) throws ParseException {
     	
-    	if(!singleCountryValidation(newFeatureCountry)) return;
+    	if(!singleCountryValidation(AFeatureCountry)) return;
     	
     	final NumberAxis yAxis = new NumberAxis();
     	final NumberAxis xAxis = new NumberAxis();
@@ -493,12 +552,21 @@ public class Controller implements Initializable {
     	lineChartFeaTask1.setTitle("Correlation of vaccination rate and confirmed cases");
     	
     	for(Country country : listChartA) {
-    		if(country.name.equals(newFeatureCountry.getValue())) {
+    		if(country.name.equals(AFeatureCountry.getValue())) {
+    			int i=0;
     			XYChart.Series<Number, Number> series = new XYChart.Series<>();
     			series.setName(country.name);
+    			double value = 0;
     			for(DateStatus status: country.getDateStatus()) {
-        			series.getData().add(new XYChart.Data(status.getTotalVaccinationsPerHundred(),
-        					status.getNewCases()));	
+    				i++;
+    				value+=status.getNewCases();
+    				if(i%7==0) {
+    					if(value<0) {
+    						value=0.0;
+    					}
+    					series.getData().add(new XYChart.Data(status.getTotalVaccinationsPerHundred(),value));
+    					value = 0.0;
+    				}	
     			}
     			lineChartFeaTask1.getData().add(series);
     			lineChartFeaTask1.setCreateSymbols(false);
@@ -508,9 +576,9 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    void doFeaTask2(ActionEvent event) throws ParseException {
+    void DoAFTask3(ActionEvent event) throws ParseException {
 
-    	if(!singleCountryValidation(newFeatureCountry)) return;
+    	if(!singleCountryValidation(AFeatureCountry)) return;
     	
     	final NumberAxis yAxis = new NumberAxis();
     	final NumberAxis xAxis = new NumberAxis();
@@ -520,12 +588,24 @@ public class Controller implements Initializable {
     	lineChartFeaTask2.setTitle("Correlation of vaccination rate and confirmed deaths");
     	
     	for(Country country : listChartA) {
-    		if(country.name.equals(newFeatureCountry.getValue())) {
+    		if(country.name.equals(AFeatureCountry.getValue())) {
     			XYChart.Series<Number, Number> series = new XYChart.Series<>();
     			series.setName(country.name);
+    			int i=0;
+    			double value=0.0;
     			for(DateStatus status: country.getDateStatus()) {
-        			series.getData().add(new XYChart.Data(status.getTotalVaccinationsPerHundred(),
-        					status.getNewDeaths()));
+    				i++;
+    				value+=status.getNewDeaths();
+    				if(i%7==0)
+    				{
+    					if(value<0) {
+    						value=0.0;
+    					}
+    					series.getData().add(new XYChart.Data(status.getTotalVaccinationsPerHundred(),
+            					value));
+    					value=0.0;
+    				}
+        			
     			}
     			lineChartFeaTask2.getData().add(series);
     			lineChartFeaTask2.setCreateSymbols(false);
@@ -534,68 +614,7 @@ public class Controller implements Initializable {
     	consoleOutput.setContent(lineChartFeaTask2);
     }
     
-    @FXML
-    void doFeaTask3(ActionEvent event) throws ParseException {
-    	if(!singleCountryValidation(newFeatureCountry)) return;
-    	
-    	final NumberAxis yAxis = new NumberAxis();
-    	final NumberAxis xAxis = new NumberAxis();
-    	
-    	yAxis.setLowerBound(0);
-    	final LineChart<Number, Number> lineChartFeaTask3 = new LineChart<Number, Number>(xAxis, yAxis);
-    	lineChartFeaTask3.setTitle("Correlation of vaccination rate and confirmed cases and deaths");
-    	
-    	for(Country country : listChartA) {
-    		if(country.name.equals(newFeatureCountry.getValue())) {
-    			XYChart.Series<Number, Number> series = new XYChart.Series<>();
-    			series.setName(country.name + " vaccination rate vs deaths");
-    			XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
-    			series2.setName(country.name + " vaccination rate vs cases");
-    			for(DateStatus status: country.getDateStatus()) {
-    				series.getData().add(new XYChart.Data(status.getTotalVaccinationsPerHundred(),
-    	        			status.getNewDeaths()));	
-    				series2.getData().add(new XYChart.Data(status.getTotalVaccinationsPerHundred(),
-    						status.getNewCases()));
-    			}
-    			
-    			lineChartFeaTask3.getData().add(series);
-    			lineChartFeaTask3.getData().add(series2);
-    			lineChartFeaTask3.setCreateSymbols(false);
-    		}
-    	}
-    	consoleOutput.setContent(lineChartFeaTask3);
-    }
     
-    @FXML
-    void DoAFTask2(ActionEvent event) {
-    	final NumberAxis yAxis = new NumberAxis();
-    	final NumberAxis xAxis = new NumberAxis();
-
-    	System.out.println(AFeatureCountry.getValue());
-        final LineChart<Number, Number> lineChartAF2 = new LineChart<Number, Number>(xAxis, yAxis);
-        lineChartAF2.setTitle("Correlation of deaths case and confirm cases");
-        
-    	for(Country country : listChartA) {
-    		System.out.println(country.name);
-    		if(country.name.equals(AFeatureCountry.getValue()))
-    		{
-    			System.out.println("Helllooooo");
-	    		XYChart.Series<Number, Number> series = new XYChart.Series<Number, Number>();
-	    		series.setName(country.name);
-	    		for(DateStatus status: country.getDateStatus()) {
-	    			series.getData().add(new XYChart.Data(status.getTotalCasesPerMillion(),status.getTotalDeathsPerMillion()));
-	    		}
-	    		lineChartAF2.getData().add(series);
-	    		lineChartAF2.setCreateSymbols(false);
-    		}
-    	}
-
-    	consoleOutput.setContent(lineChartAF2);
-    }
-    @FXML
-    void DoAFTask1(ActionEvent event) {
-    	
-    }
     /**
      *  Task Zero
      *  To be triggered by the "Confirmed Cases" button on the Task Zero Tab 
