@@ -131,12 +131,6 @@ public class Controller implements Initializable {
     private DatePicker startDateChartB;
     
     @FXML
-    private DatePicker endDateNewFea;
-    
-    @FXML
-    private DatePicker startDateNewFea;
-    
-    @FXML
     private ListView<Country> countriesChartB;
     
     @FXML
@@ -490,9 +484,6 @@ public class Controller implements Initializable {
     void doFeaTask1(ActionEvent event) throws ParseException {
     	
     	if(!singleCountryValidation(newFeatureCountry)) return;
-    	if(!chartDateValidation(startDateNewFea, endDateNewFea)) return;
-    	Date startDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(startDateNewFea.getValue().toString());
-    	Date endDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(endDateNewFea.getValue().toString());
     	
     	final NumberAxis yAxis = new NumberAxis();
     	final NumberAxis xAxis = new NumberAxis();
@@ -506,12 +497,8 @@ public class Controller implements Initializable {
     			XYChart.Series<Number, Number> series = new XYChart.Series<>();
     			series.setName(country.name);
     			for(DateStatus status: country.getDateStatus()) {
-    				if(status.getDate().equals(startDateObj) || status.getDate().equals(endDateObj)
-    				|| (status.getDate().after(startDateObj) && status.getDate().before(endDateObj)))
-    				{
-        				series.getData().add(new XYChart.Data(status.getTotalVaccinationsPerHundred(),
-        						status.getNewCases()));	
-    				}
+        			series.getData().add(new XYChart.Data(status.getTotalVaccinationsPerHundred(),
+        					status.getNewCases()));	
     			}
     			lineChartFeaTask1.getData().add(series);
     			lineChartFeaTask1.setCreateSymbols(false);
@@ -524,9 +511,6 @@ public class Controller implements Initializable {
     void doFeaTask2(ActionEvent event) throws ParseException {
 
     	if(!singleCountryValidation(newFeatureCountry)) return;
-    	if(!chartDateValidation(startDateNewFea, endDateNewFea)) return;
-    	Date startDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(startDateNewFea.getValue().toString());
-    	Date endDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(endDateNewFea.getValue().toString());
     	
     	final NumberAxis yAxis = new NumberAxis();
     	final NumberAxis xAxis = new NumberAxis();
@@ -540,12 +524,8 @@ public class Controller implements Initializable {
     			XYChart.Series<Number, Number> series = new XYChart.Series<>();
     			series.setName(country.name);
     			for(DateStatus status: country.getDateStatus()) {
-    				if(status.getDate().equals(startDateObj) || status.getDate().equals(endDateObj)
-    				|| (status.getDate().after(startDateObj) && status.getDate().before(endDateObj)))
-    				{
-        				series.getData().add(new XYChart.Data(status.getTotalVaccinationsPerHundred(),
-        						status.getNewDeaths()));	
-    				}
+        			series.getData().add(new XYChart.Data(status.getTotalVaccinationsPerHundred(),
+        					status.getNewDeaths()));
     			}
     			lineChartFeaTask2.getData().add(series);
     			lineChartFeaTask2.setCreateSymbols(false);
@@ -557,9 +537,6 @@ public class Controller implements Initializable {
     @FXML
     void doFeaTask3(ActionEvent event) throws ParseException {
     	if(!singleCountryValidation(newFeatureCountry)) return;
-    	if(!chartDateValidation(startDateNewFea, endDateNewFea)) return;
-    	Date startDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(startDateNewFea.getValue().toString());
-    	Date endDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(endDateNewFea.getValue().toString());
     	
     	final NumberAxis yAxis = new NumberAxis();
     	final NumberAxis xAxis = new NumberAxis();
@@ -575,13 +552,10 @@ public class Controller implements Initializable {
     			XYChart.Series<Number, Number> series2 = new XYChart.Series<>();
     			series2.setName(country.name + " vaccination rate vs cases");
     			for(DateStatus status: country.getDateStatus()) {
-    				if(status.getDate().equals(startDateObj) || status.getDate().equals(endDateObj)
-    	    				|| (status.getDate().after(startDateObj) && status.getDate().before(endDateObj))){
     				series.getData().add(new XYChart.Data(status.getTotalVaccinationsPerHundred(),
     	        			status.getNewDeaths()));	
     				series2.getData().add(new XYChart.Data(status.getTotalVaccinationsPerHundred(),
     						status.getNewCases()));
-    	    		}
     			}
     			
     			lineChartFeaTask3.getData().add(series);
