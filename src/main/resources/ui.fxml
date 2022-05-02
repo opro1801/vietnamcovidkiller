@@ -141,10 +141,6 @@
                               <Button fx:id="newFeaTask1" layoutX="135.0" layoutY="74.0" mnemonicParsing="false" onAction="#doFeaTask1" text="Correlation of Vaccination Rate with new Cases" />
                               <Button fx:id="newFeaTask2" layoutX="135.0" layoutY="127.0" mnemonicParsing="false" onAction="#doFeaTask2" text="Correlation of Vaccination Rate with new Deaths" />
                               <Button fx:id="newFeaTask3" layoutX="135.0" layoutY="183.0" mnemonicParsing="false" onAction="#doFeaTask3" text="Correlation of Vaccination Rate with new Cases and new Deaths" />
-                              <DatePicker fx:id="startDateNewFea" layoutX="355.0" layoutY="25.0" prefHeight="26.0" prefWidth="106.0" />
-                              <DatePicker fx:id="endDateNewFea" layoutX="561.0" layoutY="25.0" prefHeight="26.0" prefWidth="100.0" />
-                              <Label layoutX="289.0" layoutY="29.0" text="Start Date" />
-                              <Label layoutX="499.0" layoutY="30.0" text="End Date" />
                            </children>
                         </AnchorPane>
                     </content>
