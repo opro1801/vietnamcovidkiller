@@ -262,7 +262,7 @@ public class Controller implements Initializable {
     	result.prefWidthProperty().bind(consoleOutput.widthProperty());
 
     	List<String> chosenCountries = chosenACountry();
-    	System.out.println("Chosen country is"+chosenCountries);
+    	//System.out.println("Chosen country is"+chosenCountries);
     	result.setItems(TableHelper.getModels(chosenCountries,iDataset,date,"cases"));
     	consoleOutput.setContent(result);
     }
@@ -327,7 +327,7 @@ public class Controller implements Initializable {
     	result.getColumns().setAll(countries,totalCases,totalCasePer1M);
     	result.prefWidthProperty().bind(consoleOutput.widthProperty());
 
-    	List<String> chosenCountries = chosenACountry();
+    	List<String> chosenCountries = chosenBCountry();
     	System.out.println("Chosen country is"+chosenCountries);
     	result.setItems(TableHelper.getModels(chosenCountries,iDataset,date,"deaths"));
     	consoleOutput.setContent(result);
@@ -684,7 +684,7 @@ public class Controller implements Initializable {
      * If a condition is not satisfied, then display a corresponding alert
      */
     
-    boolean chartDateValidation(DatePicker startDate, DatePicker endDate) throws ParseException {
+    public boolean chartDateValidation(DatePicker startDate, DatePicker endDate) throws ParseException {
     	String firstMessage = "The period should be after the date of first COVID 19 case (November 17,2019)";
     	String secondMessage = "The period should be before the current date (July 20,2021)";
     	String thirdMessage = "Start Date must be less then End Date!";
@@ -748,7 +748,7 @@ public class Controller implements Initializable {
      * This method validates the input countries of interest and check if at
      * least one country is selected then trigger a warning
      * */
-    boolean countryValidation(ObservableList<Country> list) {
+    public boolean countryValidation(ObservableList<Country> list) {
     	String countryWarning = "You should select at least one country!";
     	String countryWarningTitle = "No country have been selected";
     	Alert alert = new Alert(AlertType.WARNING, "");
@@ -764,7 +764,7 @@ public class Controller implements Initializable {
     	return true;
     }
     
-    boolean singleCountryValidation(ComboBox<String> country) {
+    public boolean singleCountryValidation(ComboBox<String> country) {
     	String countryWarning = "You must select a country!";
     	String countryWarningTitle = "No country have been selected";
     	Alert alert = new Alert(AlertType.WARNING, "");
