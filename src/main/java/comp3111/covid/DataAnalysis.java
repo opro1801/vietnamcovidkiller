@@ -150,21 +150,21 @@ public class DataAnalysis {
 	* @param iso_code is an iso_code for the selected country
 	* @return confirmedCases is the number of confirmed cases for the selected country
 	* */
-	 public static long getNumberOfConfirmedCases(String dataset, String iso_code) {
-			long confirmedCases = 0;
-			
-			for (CSVRecord rec : getFileParser(dataset)) {
-				
-				if (rec.get("iso_code").equals(iso_code)) {
-					String s = rec.get("new_cases");
-					if (!s.equals("")) {
-						confirmedCases += Long.parseLong(s);
-					}
-				}		
-			}
-			
-			return confirmedCases;
-	 }
+//	 public static long getNumberOfConfirmedCases(String dataset, String iso_code) {
+//			long confirmedCases = 0;
+//			
+//			for (CSVRecord rec : getFileParser(dataset)) {
+//				
+//				if (rec.get("iso_code").equals(iso_code)) {
+//					String s = rec.get("new_cases");
+//					if (!s.equals("")) {
+//						confirmedCases += Long.parseLong(s);
+//					}
+//				}		
+//			}
+//			
+//			return confirmedCases;
+//	 }
 	 
 	 
 	 /**

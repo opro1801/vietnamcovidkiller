@@ -213,34 +213,37 @@ public class Controller implements Initializable {
     
     @FXML
     void doSubmitTabelA(ActionEvent event) throws ParseException{
+    	chartDateValidation(dateTableA);
     	//Get date
     	Date interestDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateTableA.getValue().toString());
-    	AlertType type = AlertType.ERROR;
-    	Alert alert = new Alert(type, "");
+//    	AlertType type = AlertType.ERROR;
+//    	Alert alert = new Alert(type, "");
+//    	
+//    	//Error handling
+//    	//Error message
+//    	String firstMessage = "The date must be after the date of first COVID 19 case (November 17,2019)";
+//    	String secondMessage = "The date must be not after the current date (July 20,2021)";
+//    	alert.initModality(Modality.APPLICATION_MODAL);
+//    	alert.initOwner(consoleOutput.getScene().getWindow());
+//    	//alert.getDialogPane().setContentText("The date must be after the date of first COVID 19 case (November 17,2019)");
+//    	alert.getDialogPane().setHeaderText("Date Error");
+//    	// Base on information we can get the first case is this
+//    	Date firstDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2019,11,17).toString());
+//    	Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2021,7,20).toString());
+//    	
+//    	if(interestDate.before(firstDate)) {
+//    		alert.getDialogPane().setContentText(firstMessage);
+//    		alert.showAndWait();
+//    		return;
+//    	}
+//    	if(interestDate.after(lastDate)) {
+//    		alert.getDialogPane().setContentText(secondMessage);
+//    		alert.showAndWait();
+//    		return;
+//    	}
     	
-    	//Error handling
-    	//Error message
-    	String firstMessage = "The date must be after the date of first COVID 19 case (November 17,2019)";
-    	String secondMessage = "The date must be not after the current date (July 20,2021)";
-    	alert.initModality(Modality.APPLICATION_MODAL);
-    	alert.initOwner(consoleOutput.getScene().getWindow());
-    	//alert.getDialogPane().setContentText("The date must be after the date of first COVID 19 case (November 17,2019)");
-    	alert.getDialogPane().setHeaderText("Date Error");
-    	// Base on information we can get the first case is this
-    	Date firstDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2019,11,17).toString());
-    	Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2021,7,20).toString());
-    	
-    	if(interestDate.before(firstDate)) {
-    		alert.getDialogPane().setContentText(firstMessage);
-    		alert.showAndWait();
-    		return;
-    	}
-    	if(interestDate.after(lastDate)) {
-    		alert.getDialogPane().setContentText(secondMessage);
-    		alert.showAndWait();
-    		return;
-    	}
     	selectedCountriesTableA = countriesTableA.getItems().filtered((Country item)->item.isDone.get());
+    	if(!countryValidation(selectedCountriesTableA)) return;
     	String iDataset = textfieldDataset.getText();
     	SimpleDateFormat dateFormat= new SimpleDateFormat("MMM dd,yyyy");
     	String date = dateFormat.format(interestDate);
@@ -262,7 +265,7 @@ public class Controller implements Initializable {
     	result.prefWidthProperty().bind(consoleOutput.widthProperty());
 
     	List<String> chosenCountries = chosenACountry();
-    	System.out.println("Chosen country is"+chosenCountries);
+    	//System.out.println("Chosen country is"+chosenCountries);
     	result.setItems(TableHelper.getModels(chosenCountries,iDataset,date,"cases"));
     	consoleOutput.setContent(result);
     }
@@ -278,35 +281,38 @@ public class Controller implements Initializable {
     
     @FXML
     void doSubmitTabelB(ActionEvent event) throws ParseException{
+    	chartDateValidation(dateTableB);
     	//Get date
     	Date interestDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateTableB.getValue().toString());
-    	AlertType type = AlertType.ERROR;
-    	Alert alert = new Alert(type, "");
+//    	AlertType type = AlertType.ERROR;
+//    	Alert alert = new Alert(type, "");
+//    	
+//    	//Error handling
+//    	//Error message
+//    	String firstMessage = "The date must be after the date of first COVID 19 case (November 17,2019)";
+//    	String secondMessage = "The date must be not after the current date (July 20,2021)";
+//    	alert.initModality(Modality.APPLICATION_MODAL);
+//    	alert.initOwner(consoleOutput.getScene().getWindow());
+//    	//alert.getDialogPane().setContentText("The date must be after the date of first COVID 19 case (November 17,2019)");
+//    	alert.getDialogPane().setHeaderText("Date Error");
+//    	// Base on information we can get the first case is this
+//    	Date firstDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2019,11,17).toString());
+//    	Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2021,7,20).toString());
+//    	
+//    	if(interestDate.before(firstDate)) {
+//    		alert.getDialogPane().setContentText(firstMessage);
+//    		alert.showAndWait();
+//    		return;
+//    	}
+//    	if(interestDate.after(lastDate)) {
+//    		alert.getDialogPane().setContentText(secondMessage);
+//    		alert.showAndWait();
+//    		return;
+//    	}
     	
-    	//Error handling
-    	//Error message
-    	String firstMessage = "The date must be after the date of first COVID 19 case (November 17,2019)";
-    	String secondMessage = "The date must be not after the current date (July 20,2021)";
-    	alert.initModality(Modality.APPLICATION_MODAL);
-    	alert.initOwner(consoleOutput.getScene().getWindow());
-    	//alert.getDialogPane().setContentText("The date must be after the date of first COVID 19 case (November 17,2019)");
-    	alert.getDialogPane().setHeaderText("Date Error");
-    	// Base on information we can get the first case is this
-    	Date firstDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2019,11,17).toString());
-    	Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2021,7,20).toString());
-    	
-    	if(interestDate.before(firstDate)) {
-    		alert.getDialogPane().setContentText(firstMessage);
-    		alert.showAndWait();
-    		return;
-    	}
-    	if(interestDate.after(lastDate)) {
-    		alert.getDialogPane().setContentText(secondMessage);
-    		alert.showAndWait();
-    		return;
-    	}
     	
     	selectedCountriesTableB = countriesTableB.getItems().filtered((Country item)->item.isDone.get());
+    	if(!countryValidation(selectedCountriesTableB)) return;
     	String iDataset = textfieldDataset.getText();
     	SimpleDateFormat dateFormat= new SimpleDateFormat("MMM dd,yyyy");
     	String date = dateFormat.format(interestDate);
@@ -327,7 +333,7 @@ public class Controller implements Initializable {
     	result.getColumns().setAll(countries,totalCases,totalCasePer1M);
     	result.prefWidthProperty().bind(consoleOutput.widthProperty());
 
-    	List<String> chosenCountries = chosenACountry();
+    	List<String> chosenCountries = chosenBCountry();
     	System.out.println("Chosen country is"+chosenCountries);
     	result.setItems(TableHelper.getModels(chosenCountries,iDataset,date,"deaths"));
     	consoleOutput.setContent(result);
@@ -599,7 +605,7 @@ public class Controller implements Initializable {
     					if(value<0) {
     						value=0.0;
     					}
-    					series.getData().add(new XYChart.Data((double) status.getFullyVaccinated() / country.getPopulation() * 100, value));
+    					series.getData().add(new XYChart.Data((double) status.getFullyVaccinated() / country.getPopulation() * 100,value));
     					value=0.0;
     				}
         			
@@ -681,7 +687,7 @@ public class Controller implements Initializable {
      * @throws ParseException throws an exception when parsing a date string
      */
     
-    boolean chartDateValidation(DatePicker startDate, DatePicker endDate) throws ParseException {
+    public boolean chartDateValidation(DatePicker startDate, DatePicker endDate) throws ParseException {
     	String firstMessage = "The period should be after the date of first COVID 19 case (November 17,2019)";
     	String secondMessage = "The period should be before the current date (July 20,2021)";
     	String thirdMessage = "Start Date must be less then End Date!";
@@ -734,14 +740,52 @@ public class Controller implements Initializable {
     	return true;
     }
     
-    
+    public boolean chartDateValidation(DatePicker date) throws ParseException {
+    	String firstMessage = "The period should be after the date of first COVID 19 case (November 17,2019)";
+    	String secondMessage = "The period should be before the current date (July 20,2021)";
+    	String dateWarningTitle = "Date Is Invalid";
+    	String startDateWarning = "A valid start date must be selected!";
+    	
+    	Alert alert = new Alert(AlertType.ERROR, "");
+    	alert.initModality(Modality.APPLICATION_MODAL);
+    	alert.initOwner(consoleOutput.getScene().getWindow());
+    	alert.getDialogPane().setHeaderText(dateWarningTitle);
+    	Date firstDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2019,11,17).toString());
+    	Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2021,7,20).toString());
+
+    	
+    	if(date.getValue() == null) {
+    		alert.getDialogPane().setContentText(startDateWarning);
+    		alert.showAndWait();
+    		return false;
+    	}
+    	
+    	
+    	Date startDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(date.getValue().toString());
+  
+    	
+    	if(startDateObj.before(firstDate)) {
+    		alert.setAlertType(AlertType.WARNING);
+    		alert.getDialogPane().setContentText(firstMessage);
+    		alert.showAndWait();
+    		return false;
+    	}
+    	
+    	if(startDateObj.after(lastDate)) {
+    		alert.setAlertType(AlertType.WARNING);
+    		alert.getDialogPane().setContentText(secondMessage);
+    		alert.showAndWait();
+    		return false;
+    	}
+    	return true;
+    }
     /**
      * Validates the input countries of interest and check if at least one country is selected then trigger a warning
      * @param list can be the selected countries list of chart A,B or table A,B
      * @return this method return true if the condition is satisfied
      * @return if no country have been selected, a warning alert box will be displayed and return false
      * */
-    boolean countryValidation(ObservableList<Country> list) {
+    public boolean countryValidation(ObservableList<Country> list) {
     	String countryWarning = "You should select at least one country!";
     	String countryWarningTitle = "No country have been selected";
     	Alert alert = new Alert(AlertType.WARNING, "");
@@ -763,7 +807,7 @@ public class Controller implements Initializable {
      * @return true if a country is selected
      * @return false if no country is selected and show an alert
      * */
-    boolean singleCountryValidation(ComboBox<String> country) {
+    public boolean singleCountryValidation(ComboBox<String> country) {
     	String countryWarning = "You must select a country!";
     	String countryWarningTitle = "No country have been selected";
     	Alert alert = new Alert(AlertType.WARNING, "");
