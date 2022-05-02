@@ -303,7 +303,7 @@ public class DataAnalysis {
 							double total_case_per_million = Double.parseDouble(total_case_million.strip());
 							ArrayList<Integer> results = new ArrayList<>();
 							//System.out.println("Haha2");
-							System.out.println(total_case+"and"+total_case_per_million);
+							//System.out.println(total_case+"and"+total_case_per_million);
 							return new Pair<Integer,Double>(total_case, total_case_per_million);
 						}
 					}
