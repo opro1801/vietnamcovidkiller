@@ -10,8 +10,8 @@ import javafx.util.Pair;
 
 //TODO Table 
 /**
+ * Table data representation for a country
  * @author nguyenkhanhatlong
- * Holding data in a table for a country
  * */
 public class TableData{
 	String countryName;
@@ -63,7 +63,7 @@ public class TableData{
 	
 	/**
 	 * Getter for totalDataPer1M
-	 * @param totalDataPer1M is either total cases per million or total deaths per million of the selected country
+	 * @return {@link #totalDataPer1M}
 	 * */
 	public double getTotalDataPer1M() {
 		return this.totalDataPer1M;

@@ -256,8 +256,8 @@ public class DataAnalysis {
 	  *@param iso_code is the iso_code of the selected country
 	  *@param date is the query date string
 	  *@param type is either deaths or cases
-	  *@return Pair<Integer, Double> a pair of either total cases and total cases per million or total deaths or total deaths per million
-	  *@return null if no valid data found
+	  *@return a pair of either total cases and total cases per million or total deaths or total deaths per million, null if no valid data found
+	  *@throws InvalidInputException throws error when parsing an invalid input
 	  * */
 	 //Factory pattern
 	 @SuppressWarnings("resource")
