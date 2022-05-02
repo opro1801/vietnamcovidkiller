@@ -31,14 +31,14 @@ final public class Country {
     
     private double hospitalBedsNumPerThousands;
     
-//    private BigDecimal population;
+    private long population;
 
     /**
      * assign name, hospitalBedsNumPerThousands and add newDateStatus to the dateStatus array
      * @param name is the name of the country
      * @param newDateStatus is a DateStatus object for a specific date
      * */
-    public Country(String name, DateStatus newDateStatus, String hospitalBedsNumPerThousands) throws ParseException {
+    public Country(String name, DateStatus newDateStatus, String hospitalBedsNumPerThousands, String population) throws ParseException {
         this.name = name;
         this.dateStatus.add(newDateStatus);
         if(hospitalBedsNumPerThousands == null || hospitalBedsNumPerThousands.length() == 0) {
@@ -46,11 +46,11 @@ final public class Country {
         } else {
         	this.hospitalBedsNumPerThousands = Double.parseDouble(hospitalBedsNumPerThousands);        	
         }
-//        if(population == null || population.length() == 0) {
-//        	this.population = new BigDecimal("0");
-//        } else {
-//        	this.population = new BigDecimal(population);   
-//        }
+        if(population == null || population.length() == 0) {
+        	this.population = 0;
+        } else {
+        	this.population = Long.parseLong(population); 
+        }
     }
 
     /**
@@ -114,7 +114,7 @@ final public class Country {
     public double getBedsNum() {
     	return this.hospitalBedsNumPerThousands;
     }
-//    public BigDecimal getPopulation() {
-//    	return this.population;
-//    }
+    public long getPopulation() {
+    	return this.population;
+    }
 }

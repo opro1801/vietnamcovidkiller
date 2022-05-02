@@ -562,7 +562,7 @@ public class Controller implements Initializable {
     					if(value<0) {
     						value=0.0;
     					}
-    					series.getData().add(new XYChart.Data(status.getTotalVaccinationsPerHundred(),value));
+    					series.getData().add(new XYChart.Data((double) status.getFullyVaccinated() / country.getPopulation() * 100,value));
     					value = 0.0;
     				}	
     			}
@@ -599,8 +599,7 @@ public class Controller implements Initializable {
     					if(value<0) {
     						value=0.0;
     					}
-    					series.getData().add(new XYChart.Data(status.getTotalVaccinationsPerHundred(),
-            					value));
+    					series.getData().add(new XYChart.Data((double) status.getFullyVaccinated() / country.getPopulation() * 100, value));
     					value=0.0;
     				}
         			
