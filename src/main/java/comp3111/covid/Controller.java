@@ -12,12 +12,15 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Pos;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContentDisplay;
 import javafx.scene.control.DatePicker;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.SelectionMode;
@@ -31,6 +34,10 @@ import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.cell.CheckBoxListCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.VBox;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
 import javafx.stage.Modality;
 import javafx.util.StringConverter;
 
@@ -213,7 +220,7 @@ public class Controller implements Initializable {
     
     @FXML
     void doSubmitTabelA(ActionEvent event) throws ParseException{
-    	chartDateValidation(dateTableA);
+    	if(!chartDateValidation(dateTableA)) return;
     	//Get date
     	Date interestDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateTableA.getValue().toString());
 //    	AlertType type = AlertType.ERROR;
@@ -267,7 +274,21 @@ public class Controller implements Initializable {
     	List<String> chosenCountries = chosenACountry();
     	//System.out.println("Chosen country is"+chosenCountries);
     	result.setItems(TableHelper.getModels(chosenCountries,iDataset,date,"cases"));
-    	consoleOutput.setContent(result);
+    	
+    	// Set title
+    	final Label label = new Label("Number of Confirmed COVID-19 Cases as of "+date);
+    	Font font = Font.font("Arial", FontWeight.BOLD, 22);
+    	//label.setContentDisplay(ContentDisplay.CENTER);
+    	label.setFont(font);
+    	label.prefWidthProperty().bind(consoleOutput.widthProperty());
+    	label.setTextAlignment(TextAlignment.CENTER);
+    	label.setAlignment(Pos.CENTER);
+    	VBox newVbox = new VBox();
+    	newVbox.setAlignment(Pos.CENTER);
+    	newVbox.setSpacing(2);
+    	newVbox.getChildren().addAll(label,result);
+    	// end
+    	consoleOutput.setContent(newVbox);
     }
     
     //helper 
@@ -281,7 +302,7 @@ public class Controller implements Initializable {
     
     @FXML
     void doSubmitTabelB(ActionEvent event) throws ParseException{
-    	chartDateValidation(dateTableB);
+    	if(!chartDateValidation(dateTableB)) return;
     	//Get date
     	Date interestDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateTableB.getValue().toString());
 //    	AlertType type = AlertType.ERROR;
@@ -336,7 +357,20 @@ public class Controller implements Initializable {
     	List<String> chosenCountries = chosenBCountry();
     	System.out.println("Chosen country is"+chosenCountries);
     	result.setItems(TableHelper.getModels(chosenCountries,iDataset,date,"deaths"));
-    	consoleOutput.setContent(result);
+    	// set title
+    	final Label label = new Label("Number of Confirmed COVID-19 Deaths as of "+date);
+    	Font font = Font.font("Arial", FontWeight.BOLD, 22);
+    	//label.setContentDisplay(ContentDisplay.CENTER);
+    	label.setFont(font);
+    	label.prefWidthProperty().bind(consoleOutput.widthProperty());
+    	label.setTextAlignment(TextAlignment.CENTER);
+    	label.setAlignment(Pos.CENTER);
+    	VBox newVbox = new VBox();
+    	newVbox.setAlignment(Pos.CENTER);
+    	newVbox.setSpacing(2);
+    	newVbox.getChildren().addAll(label,result);
+    	//end
+    	consoleOutput.setContent(newVbox);
     }
     //helper
     List<String> chosenBCountry(){
@@ -365,7 +399,7 @@ public class Controller implements Initializable {
      * @throws ParseExceiption the method throws an exception if occurred when parsing the dates 
      * */
     void doSubmitChartA(ActionEvent event) throws ParseException {
-    
+    	
     	if(!chartDateValidation(startDateChartA, endDateChartA)) return;
     	Date startDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(startDateChartA.getValue().toString());
     	Date endDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(endDateChartA.getValue().toString());
