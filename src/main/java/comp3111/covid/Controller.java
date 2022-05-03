@@ -47,6 +47,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -220,34 +221,9 @@ public class Controller implements Initializable {
     
     @FXML
     void doSubmitTabelA(ActionEvent event) throws ParseException{
-    	if(!chartDateValidation(dateTableA)) return;
-    	//Get date
+    	if(!dateValidation(dateTableA)) return;
+		//Get date
     	Date interestDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateTableA.getValue().toString());
-//    	AlertType type = AlertType.ERROR;
-//    	Alert alert = new Alert(type, "");
-//    	
-//    	//Error handling
-//    	//Error message
-//    	String firstMessage = "The date must be after the date of first COVID 19 case (November 17,2019)";
-//    	String secondMessage = "The date must be not after the current date (July 20,2021)";
-//    	alert.initModality(Modality.APPLICATION_MODAL);
-//    	alert.initOwner(consoleOutput.getScene().getWindow());
-//    	//alert.getDialogPane().setContentText("The date must be after the date of first COVID 19 case (November 17,2019)");
-//    	alert.getDialogPane().setHeaderText("Date Error");
-//    	// Base on information we can get the first case is this
-//    	Date firstDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2019,11,17).toString());
-//    	Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2021,7,20).toString());
-//    	
-//    	if(interestDate.before(firstDate)) {
-//    		alert.getDialogPane().setContentText(firstMessage);
-//    		alert.showAndWait();
-//    		return;
-//    	}
-//    	if(interestDate.after(lastDate)) {
-//    		alert.getDialogPane().setContentText(secondMessage);
-//    		alert.showAndWait();
-//    		return;
-//    	}
     	
     	selectedCountriesTableA = countriesTableA.getItems().filtered((Country item)->item.isDone.get());
     	if(!countryValidation(selectedCountriesTableA)) return;
@@ -302,35 +278,9 @@ public class Controller implements Initializable {
     
     @FXML
     void doSubmitTabelB(ActionEvent event) throws ParseException{
-    	if(!chartDateValidation(dateTableB)) return;
+    	if(!dateValidation(dateTableB)) return;
     	//Get date
     	Date interestDate = new SimpleDateFormat("yyyy-MM-dd").parse(dateTableB.getValue().toString());
-//    	AlertType type = AlertType.ERROR;
-//    	Alert alert = new Alert(type, "");
-//    	
-//    	//Error handling
-//    	//Error message
-//    	String firstMessage = "The date must be after the date of first COVID 19 case (November 17,2019)";
-//    	String secondMessage = "The date must be not after the current date (July 20,2021)";
-//    	alert.initModality(Modality.APPLICATION_MODAL);
-//    	alert.initOwner(consoleOutput.getScene().getWindow());
-//    	//alert.getDialogPane().setContentText("The date must be after the date of first COVID 19 case (November 17,2019)");
-//    	alert.getDialogPane().setHeaderText("Date Error");
-//    	// Base on information we can get the first case is this
-//    	Date firstDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2019,11,17).toString());
-//    	Date lastDate = new SimpleDateFormat("yyyy-MM-dd").parse(LocalDate.of(2021,7,20).toString());
-//    	
-//    	if(interestDate.before(firstDate)) {
-//    		alert.getDialogPane().setContentText(firstMessage);
-//    		alert.showAndWait();
-//    		return;
-//    	}
-//    	if(interestDate.after(lastDate)) {
-//    		alert.getDialogPane().setContentText(secondMessage);
-//    		alert.showAndWait();
-//    		return;
-//    	}
-    	
     	
     	selectedCountriesTableB = countriesTableB.getItems().filtered((Country item)->item.isDone.get());
     	if(!countryValidation(selectedCountriesTableB)) return;
@@ -399,23 +349,24 @@ public class Controller implements Initializable {
      * @throws ParseExceiption the method throws an exception if occurred when parsing the dates 
      * */
     void doSubmitChartA(ActionEvent event) throws ParseException {
-    	
-    	if(!chartDateValidation(startDateChartA, endDateChartA)) return;
+    
+    	if(!dateValidation(startDateChartA, endDateChartA)) return;
     	Date startDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(startDateChartA.getValue().toString());
-    	Date endDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(endDateChartA.getValue().toString());
+    	Date endDateObj = Date.from(endDateChartA.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+//    			new SimpleDateFormat("yyyy-MM-dd").parse(endDateChartA.getValue().toString());
     	selectedCountriesChartA = countriesChartA.getItems().filtered((Country item) -> item.isDone.get());
     	
     	if(!countryValidation(selectedCountriesChartA)) return;
     	
     	int startDateInt = getTimeInt(startDateObj);
-    	int endDateInt = getTimeInt(endDateObj);
+    	int endDateInt = getTimeInt(endDateObj) + 10;
     	final NumberAxis yAxis = new NumberAxis();
     	final NumberAxis xAxis = new NumberAxis();
     	
     	xAxis.setAutoRanging(false);
     	xAxis.setLowerBound(startDateInt);
-    	xAxis.setUpperBound(endDateInt);
-    	xAxis.setTickUnit((int)((endDateInt - startDateInt) / 10));
+    	xAxis.setUpperBound(endDateInt + 100);
+    	xAxis.setTickUnit(((endDateInt - startDateInt) * 1.0 / 10));
     	xAxis.setTickLabelFormatter(new StringConverter<Number>() {
     	    private final SimpleDateFormat format = new SimpleDateFormat("MMM dd,yyyy");
     	    @Override
@@ -446,10 +397,8 @@ public class Controller implements Initializable {
     
     
     /**
-     * This method triggered when a user click on the submit button on Chart B tab
-     * @param event is an event that a user click on submit button on Chart B tab
-     * 
-     * This method gets the start date, end date and the countries of interest
+     * Triggered when a user click on the submit button on Chart B tab
+     * Gets the start date, end date and the countries of interest
      * Then validate the date and countries selected
      * If the input entered are valid:
      * The method then generate the line chart showing the cumulative confirmed COVID-19 deaths (per 1M)
@@ -458,14 +407,14 @@ public class Controller implements Initializable {
      * for each selected country, the method retrieve the death over the selected period
      * by getDateStatus method from Country class, adding to the series.
      * Then the series is displayed on the chart view
-     * 
+     * @param event is an event that a user click on submit button on Chart B tab 
      * @throws ParseExceiption the method throws an exception if occurred when parsing the dates 
      * */
     @SuppressWarnings("unchecked")
     @FXML
     void doSubmitChartB(ActionEvent event) throws ParseException {
     	
-    	if(!chartDateValidation(startDateChartB, endDateChartB)) return;
+    	if(!dateValidation(startDateChartB, endDateChartB)) return;
     	Date startDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(startDateChartB.getValue().toString());
     	Date endDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(endDateChartB.getValue().toString());
     	selectedCountriesChartB = countriesChartB.getItems().filtered((Country item) -> item.isDone.get());
@@ -473,14 +422,14 @@ public class Controller implements Initializable {
     	if(!countryValidation(selectedCountriesChartB)) return;
     	
     	int startDateInt = getTimeInt(startDateObj);
-    	int endDateInt = getTimeInt(endDateObj);
+    	int endDateInt = getTimeInt(endDateObj) + 10;
     	final NumberAxis yAxis = new NumberAxis();
     	final NumberAxis xAxis = new NumberAxis();
     	
     	xAxis.setAutoRanging(false);
     	xAxis.setLowerBound(startDateInt);
-    	xAxis.setUpperBound(endDateInt);
-    	xAxis.setTickUnit((int)((endDateInt - startDateInt) / 10));
+    	xAxis.setUpperBound(endDateInt + 100);
+    	xAxis.setTickUnit(((endDateInt - startDateInt) * 1.0 / 10));
     	xAxis.setTickLabelFormatter(new StringConverter<Number>() {
     	    private final SimpleDateFormat format = new SimpleDateFormat("MMM dd,yyyy");
     	    @Override
@@ -711,19 +660,18 @@ public class Controller implements Initializable {
     
     
     /**
+     * Validation for the date input. 
+     * Check if the start date and end date have been entered and entered correctly. 
+     * Then check if the end date is after the start date. 
+     * Then check if the period entered is within the period with data available in current data set. 
+     * If a condition is not satisfied, then display a corresponding alert.
      * @param startDate is the DatePicker object for start date on the UI of the current task
      * @param endDate is the DatePicker object for end date on the UI of the current task
-     * @return true if the date input is valid
-     * @return false if the date input is invalid
+     * @return true if the date input is valid, false if the date input is invalid
      * @throws ParseException throws an exception when parsing a date string
-     * 
-     * The method check if the start date and end date have been entered and entered correctly
-     * Then check if the end date is after the start date
-     * Then check if the period entered is within the period with data available in current data set
-     * If a condition is not satisfied, then display a corresponding alert
      */
     
-    public boolean chartDateValidation(DatePicker startDate, DatePicker endDate) throws ParseException {
+    public boolean dateValidation(DatePicker startDate, DatePicker endDate) throws ParseException {
     	String firstMessage = "The period should be after the date of first COVID 19 case (November 17,2019)";
     	String secondMessage = "The period should be before the current date (July 20,2021)";
     	String thirdMessage = "Start Date must be less then End Date!";
@@ -776,7 +724,16 @@ public class Controller implements Initializable {
     	return true;
     }
     
-    public boolean chartDateValidation(DatePicker date) throws ParseException {
+    /**
+     * Validation for the date input. 
+     * Check if the date have been entered and entered correctly. 
+     * Then check if the date entered is within the period with data available in current data set. 
+     * If a condition is not satisfied, then display a corresponding alert.
+     * @param date is the DatePicker object for the date on the UI of the current task
+     * @return true if the date input is valid, false if the date input is invalid
+     * @throws ParseException throws an exception when parsing a date string
+     * */
+    public boolean dateValidation(DatePicker date) throws ParseException {
     	String firstMessage = "The period should be after the date of first COVID 19 case (November 17,2019)";
     	String secondMessage = "The period should be before the current date (July 20,2021)";
     	String dateWarningTitle = "Date Is Invalid";
@@ -816,14 +773,9 @@ public class Controller implements Initializable {
     	return true;
     }
     /**
-     * This method takes the current selected countries list
+     * Validates the input countries of interest and check if at least one country is selected then trigger a warning
      * @param list can be the selected countries list of chart A,B or table A,B
-     * 
-     * @return this method return true if the condition is satisfied
-     * @return if no country have been selected, a warning alert box will be displayed and return false
-     * 
-     * This method validates the input countries of interest and check if at
-     * least one country is selected then trigger a warning
+     * @return this method return true if the condition is satisfied, if no country have been selected, a warning alert box will be displayed and return false
      * */
     public boolean countryValidation(ObservableList<Country> list) {
     	String countryWarning = "You should select at least one country!";
@@ -841,6 +793,11 @@ public class Controller implements Initializable {
     	return true;
     }
     
+    /**
+     * Validates if a country is selected
+     * @param country is the ComboBox object of the UI for selecting a country
+     * @return true if a country is selected, false if no country is selected and show an alert
+     * */
     public boolean singleCountryValidation(ComboBox<String> country) {
     	String countryWarning = "You must select a country!";
     	String countryWarningTitle = "No country have been selected";

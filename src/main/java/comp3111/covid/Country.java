@@ -11,7 +11,7 @@ import javafx.beans.property.SimpleBooleanProperty;
 
 
 /**
- * This class representing a country with its data
+ * Representation for a country with its data
  * @author thanhlampham
  * */
 final public class Country {
@@ -37,6 +37,9 @@ final public class Country {
      * assign name, hospitalBedsNumPerThousands and add newDateStatus to the dateStatus array
      * @param name is the name of the country
      * @param newDateStatus is a DateStatus object for a specific date
+     * @param hospitalBedsNumPerThousands is number of hospital beds space per thousand
+     * @param population is the population of the country
+     * @throws ParseException throws an exception when parsing the data read from the dataset
      * */
     public Country(String name, DateStatus newDateStatus, String hospitalBedsNumPerThousands, String population) throws ParseException {
         this.name = name;
@@ -114,7 +117,12 @@ final public class Country {
     public double getBedsNum() {
     	return this.hospitalBedsNumPerThousands;
     }
+    /**
+     * getter for population
+     * @return {@link #population}
+     * */
     public long getPopulation() {
     	return this.population;
     }
 }
+
