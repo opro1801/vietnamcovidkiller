@@ -6,7 +6,7 @@ import java.util.Date;
 
 
 /**
- * holding total cases, total cases per million, new cases, total deaths, total deaths per million, new deaths and total vaccinations per hundred for a specific date
+ * Holds total cases, total cases per million, new cases, total deaths, total deaths per million, new deaths and total vaccinations per hundred for a specific date
  * @author thanhlampham
  * */
 public class DateStatus {
@@ -46,8 +46,10 @@ public class DateStatus {
 	 * @param sDate the date of the status
 	 * @param totalCases number of total confirmed cases
 	 * @param totalCasesPerMillion number of total confirmed cases per million people
+	 * @param newCases number of new cases of the day
 	 * @param totalDeaths number of total confirmed deaths
 	 * @param totalDeathsPerMillion number of total confirmed deaths per million people
+	 * @param newDeaths number of new deaths of the day
 	 * @param totalVaccinationsPerHundred number of vaccinations per hundred
 	 * @param fullyVaccinated number of people fully vaccinated
 	 * @throws ParseException throws an exception when parsing sDate
@@ -114,6 +116,10 @@ public class DateStatus {
 	public long getTotalCases() {
 		return totalCases;
 	}
+	/**
+	 * Getter for new cases
+	 * @return {@link #newCases}
+	 * */
 	public long getNewCases() {
 		return newCases;
 	}
@@ -163,3 +169,4 @@ public class DateStatus {
 		return fullyVaccinated;
 	}
 }
+
