@@ -47,6 +47,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.Objects;
 import java.util.ResourceBundle;
 
@@ -351,20 +352,21 @@ public class Controller implements Initializable {
     
     	if(!dateValidation(startDateChartA, endDateChartA)) return;
     	Date startDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(startDateChartA.getValue().toString());
-    	Date endDateObj = new SimpleDateFormat("yyyy-MM-dd").parse(endDateChartA.getValue().toString());
+    	Date endDateObj = Date.from(endDateChartA.getValue().atStartOfDay(ZoneId.systemDefault()).toInstant());
+//    			new SimpleDateFormat("yyyy-MM-dd").parse(endDateChartA.getValue().toString());
     	selectedCountriesChartA = countriesChartA.getItems().filtered((Country item) -> item.isDone.get());
     	
     	if(!countryValidation(selectedCountriesChartA)) return;
     	
     	int startDateInt = getTimeInt(startDateObj);
-    	int endDateInt = getTimeInt(endDateObj);
+    	int endDateInt = getTimeInt(endDateObj) + 10;
     	final NumberAxis yAxis = new NumberAxis();
     	final NumberAxis xAxis = new NumberAxis();
     	
     	xAxis.setAutoRanging(false);
     	xAxis.setLowerBound(startDateInt);
-    	xAxis.setUpperBound(endDateInt);
-    	xAxis.setTickUnit((int)((endDateInt - startDateInt) / 10));
+    	xAxis.setUpperBound(endDateInt + 100);
+    	xAxis.setTickUnit(((endDateInt - startDateInt) * 1.0 / 10));
     	xAxis.setTickLabelFormatter(new StringConverter<Number>() {
     	    private final SimpleDateFormat format = new SimpleDateFormat("MMM dd,yyyy");
     	    @Override
@@ -420,14 +422,14 @@ public class Controller implements Initializable {
     	if(!countryValidation(selectedCountriesChartB)) return;
     	
     	int startDateInt = getTimeInt(startDateObj);
-    	int endDateInt = getTimeInt(endDateObj);
+    	int endDateInt = getTimeInt(endDateObj) + 10;
     	final NumberAxis yAxis = new NumberAxis();
     	final NumberAxis xAxis = new NumberAxis();
     	
     	xAxis.setAutoRanging(false);
     	xAxis.setLowerBound(startDateInt);
-    	xAxis.setUpperBound(endDateInt);
-    	xAxis.setTickUnit((int)((endDateInt - startDateInt) / 10));
+    	xAxis.setUpperBound(endDateInt + 100);
+    	xAxis.setTickUnit(((endDateInt - startDateInt) * 1.0 / 10));
     	xAxis.setTickLabelFormatter(new StringConverter<Number>() {
     	    private final SimpleDateFormat format = new SimpleDateFormat("MMM dd,yyyy");
     	    @Override
